@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{0DCD5377-0062-44C8-9754-5C9A4A3533C9}"
+	ProjectSection(SolutionItems) = preProject
+		docker-compose.yaml = docker-compose.yaml
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{6B9928C4-9AF7-4B19-BB9C-36D068B46A42}"
 EndProject
@@ -15,13 +18,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.Core", "Core\Domain.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demand.Application", "Core\Demand.Application\Demand.Application.csproj", "{D9747059-4D9B-4426-AB01-0EC3964171BE}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Driver", "Adapters\Driver", "{D785D31C-D9A9-49C9-A633-202C8D52881F}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Driver", "Driver", "{D785D31C-D9A9-49C9-A633-202C8D52881F}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Driven", "Adapters\Driven", "{9EFF5EBB-1F58-446C-9FE1-CCC3DCFB6927}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Driven", "Driven", "{9EFF5EBB-1F58-446C-9FE1-CCC3DCFB6927}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoodTotem.API", "Adapters\Driver\FoodTotem.API\FoodTotem.API.csproj", "{3BAB6909-BA4C-47C4-BA56-41DA95065A2E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoodTotem.Infra", "Adapters\Driven\FoodTotem.Infra\FoodTotem.Infra.csproj", "{0BDDA82B-8827-4CBD-80A4-942383A8A9CF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.Core", "Core\Data.Core\Data.Core.csproj", "{5F198C1F-7158-4D61-A4A1-1A49934929AE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,6 +54,10 @@ Global
 		{0BDDA82B-8827-4CBD-80A4-942383A8A9CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0BDDA82B-8827-4CBD-80A4-942383A8A9CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0BDDA82B-8827-4CBD-80A4-942383A8A9CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F198C1F-7158-4D61-A4A1-1A49934929AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F198C1F-7158-4D61-A4A1-1A49934929AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F198C1F-7158-4D61-A4A1-1A49934929AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F198C1F-7158-4D61-A4A1-1A49934929AE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -63,6 +72,7 @@ Global
 		{9EFF5EBB-1F58-446C-9FE1-CCC3DCFB6927} = {32D21DE5-C975-4C62-B07A-3A53B39A1E7C}
 		{3BAB6909-BA4C-47C4-BA56-41DA95065A2E} = {D785D31C-D9A9-49C9-A633-202C8D52881F}
 		{0BDDA82B-8827-4CBD-80A4-942383A8A9CF} = {9EFF5EBB-1F58-446C-9FE1-CCC3DCFB6927}
+		{5F198C1F-7158-4D61-A4A1-1A49934929AE} = {6B9928C4-9AF7-4B19-BB9C-36D068B46A42}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2283AF09-2D99-48E1-8D5F-15FBFB17A6CD}

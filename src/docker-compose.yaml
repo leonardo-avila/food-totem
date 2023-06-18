@@ -1,0 +1,22 @@
+version: "1.0"
+
+services:
+    api:
+        image: food-totem-api
+        build:
+            context: .
+            dockerfile: Dockerfile
+        ports:
+            - "8080:80"
+    database:
+        image: mcr.microsoft.com/mssql/server:2022-latest
+        environment:
+            ACCEPT_EULA: Y
+            MSSQL_SA_PASSWORD: yourStrong(!)Password
+        ports:
+            - "1433:1433"
+        container_name: sql
+        hostname: sql
+
+    
+    

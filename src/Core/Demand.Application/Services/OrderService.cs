@@ -11,9 +11,9 @@ namespace Demand.Application.Services
         {
             _orderRepository = orderRepository;
         }
-        public IEnumerable<Order> GetOrders() 
+        public async Task<IEnumerable<Order>> GetOrders() 
         {
-            return _orderRepository.GetOrders();
+            return await _orderRepository.GetOrders();
         }
     }
 }

@@ -1,9 +1,10 @@
-﻿using Demand.Domain.Models;
+﻿using Data.Core;
+using Demand.Domain.Models;
 
 namespace Demand.Application.Ports
 {
-    public interface IOrderRepository
+    public interface IOrderRepository : IRepository<Order>
     {
-        IEnumerable<Order> GetOrders();
+        Task<IEnumerable<Order>> GetOrders();
     }
 }

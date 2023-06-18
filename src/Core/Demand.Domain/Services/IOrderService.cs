@@ -4,6 +4,6 @@ namespace Demand.Domain.Services
 {
     public interface IOrderService
     {
-        IEnumerable<Order> GetOrders();
+        Task<IEnumerable<Order>> GetOrders();
     }
 }
