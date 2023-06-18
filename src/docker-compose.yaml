@@ -5,7 +5,7 @@ services:
         image: food-totem-api
         build:
             context: .
-            dockerfile: Dockerfile
+            dockerfile: Adapters/Driver/FoodTotem.API/Dockerfile
         ports:
             - "8080:80"
     database:
