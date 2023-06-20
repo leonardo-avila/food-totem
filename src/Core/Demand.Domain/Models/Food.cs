@@ -10,6 +10,7 @@ namespace Demand.Domain.Models
         public string ImageUrl { get; private set; }
         public double Price { get; private set; }
         public FoodCategoryEnum Category { get; private set; }
+        public List<OrderFood>? Orders { get; private set; }
         
         public Food(string name, string description, string imageUrl, double price, FoodCategoryEnum category)
         {

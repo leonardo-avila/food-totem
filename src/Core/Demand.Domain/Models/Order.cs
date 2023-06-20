@@ -10,7 +10,7 @@ namespace Demand.Domain.Models
         public PaymentStatus PaymentStatus { get; private set; } = PaymentStatus.Pending;
         public DateTime OrderDate { get; private set; } = DateTime.Now;
         public DateTime LastStatusDate { get; private set; }
-        public List<Food> Combo { get; private set; } = new List<Food>();
+        public List<OrderFood> Combo { get; private set; } = new List<OrderFood>();
         public Order(string customer)
         {
             Customer = customer;
@@ -19,12 +19,12 @@ namespace Demand.Domain.Models
 
         public void AddFood(Food food)
         {
-            Combo.Add(food);
+            Combo.Add(new OrderFood(food.Id, Id));
         }
 
         public double GetTotal()
         {
-            return Combo.Sum(x => x.Price);
+            return Combo.Sum(x => x.Food.Price);
         }
 
         public void SetOrderStatus(OrderStatusEnum orderStatus)
