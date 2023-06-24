@@ -1,6 +1,18 @@
 version: "1.0"
 
 services:
+    database:
+        image: mysql:8.0.33
+        environment:
+            MYSQL_ROOT_PASSWORD: StRoNg_PaSsWoRd
+            MYSQL_DATABASE: foodtotem
+            MYSQL_USER: user
+            MYSQL_PASSWORD: uSeRpAsSwOrD
+        ports:
+            - "3306:3306"
+        container_name: database
+        networks:
+            - foodtotem-network
     api:
         image: food-totem-api
         build:
@@ -8,15 +20,15 @@ services:
             dockerfile: Adapters/Driver/FoodTotem.API/Dockerfile
         ports:
             - "8080:80"
-    database:
-        image: mcr.microsoft.com/mssql/server:2022-latest
-        environment:
-            ACCEPT_EULA: Y
-            MSSQL_SA_PASSWORD: yourStrong(!)Password
-        ports:
-            - "1433:1433"
-        container_name: sql
-        hostname: sql
+        depends_on:
+            database:
+                condition: service_completed_successfully
+        networks:
+            - foodtotem-network
+        restart: always
+networks:
+    foodtotem-network:
+        driver: bridge
 
     
     

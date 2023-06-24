@@ -1,3 +1,6 @@
+using FoodTotem.Infra.Context;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Configuration
@@ -16,11 +19,18 @@ builder.Services.AddSwaggerGen();
 // Set DbContexts
 builder.Services.AddDatabaseConfiguration(builder.Configuration);
 
+
 // Dependency Injection
 builder.Services.AddDemandServices();
 
 
 var app = builder.Build();
+
+using (var serviceScope = app.Services.CreateScope())
+{
+    var context = serviceScope.ServiceProvider.GetService<DemandContext>();
+    context.Database.Migrate();
+}
 
 // Configure the HTTP request pipeline.
 app.UseSwagger();
