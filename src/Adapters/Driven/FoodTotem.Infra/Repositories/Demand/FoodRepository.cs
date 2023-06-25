@@ -24,17 +24,17 @@ namespace FoodTotem.Infra.Repositories.Demand
             return await DbSet.ToListAsync();
         }
 
-        public void Add(Food food)
+        public void AddFood(Food food)
         {
             DbSet.Add(food);
         }
 
-        public void Update(Food food)
+        public void UpdateFood(Food food)
         {
             DbSet.Update(food);
         }
 
-        public void Remove(Food food)
+        public void RemoveFood(Food food)
         {
             DbSet.Remove(food);
         }

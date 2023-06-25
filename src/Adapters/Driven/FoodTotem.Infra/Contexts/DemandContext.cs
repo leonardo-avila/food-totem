@@ -14,10 +14,11 @@ namespace FoodTotem.Infra.Contexts
         }
 
         public DbSet<Order> Orders { get; set; }
+        public DbSet<Food> Foods { get; set; }
+        public DbSet<OrderFood> OrderFoods { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.HasDefaultSchema("Demand");
             modelBuilder.ApplyConfiguration(new OrderMap());
             modelBuilder.ApplyConfiguration(new OrderFoodMap());
             modelBuilder.ApplyConfiguration(new FoodMap());

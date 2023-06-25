@@ -34,17 +34,17 @@ namespace FoodTotem.Infra.Repositories.Demand
             return await DbSet.FindAsync(orderId);
         }
 
-        public void Add(Order order)
+        public void AddOrder(Order order)
         {
             DbSet.Add(order);
         }
 
-        public void Update(Order order)
+        public void UpdateOrder(Order order)
         {
             DbSet.Update(order);
         }
 
-        public void Remove(Order order)
+        public void RemoveOrder(Order order)
         {
             DbSet.Remove(order);
         }

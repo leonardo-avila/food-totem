@@ -1,6 +1,6 @@
 ﻿using Data.Core;
-using Demand.Domain.Models;
 using FoodTotem.Infra.Mappings.Identity;
+using Identity.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace FoodTotem.Infra.Contexts
@@ -13,11 +13,10 @@ namespace FoodTotem.Infra.Contexts
             ChangeTracker.AutoDetectChangesEnabled = false;
         }
 
-        public DbSet<Order> Orders { get; set; }
+        public DbSet<Customer> Customers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.HasDefaultSchema("Identity");
             modelBuilder.ApplyConfiguration(new CustomerMap());
 
             base.OnModelCreating(modelBuilder);

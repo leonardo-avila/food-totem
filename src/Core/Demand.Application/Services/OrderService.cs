@@ -17,5 +17,10 @@ namespace Demand.Application.Services
         {
             return await _orderRepository.GetOrders();
         }
+
+        public async Task<Order> GetOrder(Guid id)
+        {
+            return await _orderRepository.GetOrder(id);
+        }
     }
 }

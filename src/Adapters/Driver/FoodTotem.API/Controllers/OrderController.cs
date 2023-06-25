@@ -17,10 +17,16 @@ namespace FoodTotem.API.Controllers
             _orderService = orderService;
         }
 
-        [HttpGet(Name = "GetOrders")]
+        [HttpGet(Name = "orders")]
         public IActionResult Get()
         {
             return Ok(_orderService.GetOrders());
+        }
+
+        [HttpGet(Name = "orders/{id}")]
+        public IActionResult GetById(Guid id)
+        {
+            return Ok(_orderService.GetOrder(id));
         }
     }
 }

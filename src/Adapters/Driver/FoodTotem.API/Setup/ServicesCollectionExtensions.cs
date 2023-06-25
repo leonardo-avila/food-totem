@@ -7,7 +7,6 @@ using FoodTotem.Infra.Repositories.Identity;
 using Identity.Application.Ports;
 using Identity.Application.Services;
 using Identity.Domain.Services;
-using Microsoft.EntityFrameworkCore;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -35,15 +34,8 @@ namespace Microsoft.Extensions.DependencyInjection
             return services;
         }
 
-        public static void AddDatabaseConfiguration(this IServiceCollection services, IConfiguration configuration) 
-        {
-            if (services == null) throw new ArgumentNullException(nameof(services));
+        
 
-            services.AddDbContext<DemandContext>(options =>
-                options.UseMySQL(configuration.GetConnectionString("DefaultConnection")!));
-
-            services.AddDbContext<IdentityContext>(options =>
-                options.UseMySQL(configuration.GetConnectionString("DefaultConnection")!));
-        }
     }
+    
 }
