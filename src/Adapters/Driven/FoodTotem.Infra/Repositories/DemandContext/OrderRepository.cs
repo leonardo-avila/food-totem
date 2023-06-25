@@ -4,14 +4,14 @@ using Demand.Domain.Models;
 using FoodTotem.Infra.Context;
 using Microsoft.EntityFrameworkCore;
 
-namespace FoodTotem.Infra.Repositories
+namespace FoodTotem.Infra.Repositories.DemandContext
 {
     public class OrderRepository : IOrderRepository
     {
-        protected readonly DemandContext Db;
+        protected readonly IdentityContext Db;
         protected readonly DbSet<Order> DbSet;
 
-        public OrderRepository(DemandContext context)
+        public OrderRepository(IdentityContext context)
         {
             Db = context;
             DbSet = Db.Set<Order>();

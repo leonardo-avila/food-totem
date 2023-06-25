@@ -2,7 +2,7 @@
 using Demand.Application.Services;
 using Demand.Domain.Services;
 using FoodTotem.Infra.Context;
-using FoodTotem.Infra.Repositories;
+using FoodTotem.Infra.Repositories.DemandContext;
 using Microsoft.EntityFrameworkCore;
 
 namespace Microsoft.Extensions.DependencyInjection
@@ -22,8 +22,8 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
 
-            services.AddDbContext<DemandContext>(options =>
-                options.UseMySQL(configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<IdentityContext>(options =>
+                options.UseMySQL(configuration.GetConnectionString("DefaultConnection")!));
         }
     }
 }

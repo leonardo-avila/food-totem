@@ -23,12 +23,11 @@ builder.Services.AddDatabaseConfiguration(builder.Configuration);
 // Dependency Injection
 builder.Services.AddDemandServices();
 
-
 var app = builder.Build();
 
 using (var serviceScope = app.Services.CreateScope())
 {
-    var context = serviceScope.ServiceProvider.GetService<DemandContext>();
+    var context = serviceScope.ServiceProvider.GetService<IdentityContext>();
     context.Database.Migrate();
 }
 

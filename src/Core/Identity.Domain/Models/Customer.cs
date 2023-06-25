@@ -1,13 +1,13 @@
-﻿using Demand.Domain.Models.Enums;
+﻿using Identity.Domain.Models.Enums;
 using Domain.Core;
 
-namespace Demand.Domain.Models
+namespace Identity.Domain.Models
 {
     public class Customer : Entity
     {
         public string? Email { get; private set; }
         public string? CPF { get; private set; }
-        public Guid Protocol { get; private set; }
+        public Guid? Protocol { get; private set; }
         public AuthenticationTypeEnum AuthenticationType { get; private set; }
 
         public Customer(AuthenticationTypeEnum authenticationType, string? identification)
@@ -20,7 +20,7 @@ namespace Demand.Domain.Models
 
         public override string ToString()
         {
-            if (AuthenticationType == AuthenticationTypeEnum.Anonymous) return Protocol.ToString();
+            if (AuthenticationType == AuthenticationTypeEnum.Anonymous) return Protocol.ToString()!;
             else if (AuthenticationType == AuthenticationTypeEnum.Email) return Email!;
             else return CPF!;
         }

@@ -1,4 +1,4 @@
-﻿namespace Demand.Domain.Models.Enums
+﻿namespace Identity.Domain.Models.Enums
 {
     public enum AuthenticationTypeEnum
     {

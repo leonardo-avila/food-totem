@@ -1,0 +1,107 @@
+{
+  "version": 3,
+  "targets": {
+    "net6.0": {
+      "Domain.Core/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "compile": {
+          "bin/placeholder/Domain.Core.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Domain.Core.dll": {}
+        }
+      },
+      "Identity.Domain/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "dependencies": {
+          "Domain.Core": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/Identity.Domain.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Identity.Domain.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Domain.Core/1.0.0": {
+      "type": "project",
+      "path": "../Domain.Core/Domain.Core.csproj",
+      "msbuildProject": "../Domain.Core/Domain.Core.csproj"
+    },
+    "Identity.Domain/1.0.0": {
+      "type": "project",
+      "path": "../Identity.Domain/Identity.Domain.csproj",
+      "msbuildProject": "../Identity.Domain/Identity.Domain.csproj"
+    }
+  },
+  "projectFileDependencyGroups": {
+    "net6.0": [
+      "Identity.Domain >= 1.0.0"
+    ]
+  },
+  "packageFolders": {
+    "/Users/leonardoavila/.nuget/packages/": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "/Users/leonardoavila/Documents/repositories/food-totem/src/Core/Identity.Application/Identity.Application.csproj",
+      "projectName": "Identity.Application",
+      "projectPath": "/Users/leonardoavila/Documents/repositories/food-totem/src/Core/Identity.Application/Identity.Application.csproj",
+      "packagesPath": "/Users/leonardoavila/.nuget/packages/",
+      "outputPath": "/Users/leonardoavila/Documents/repositories/food-totem/src/Core/Identity.Application/obj/",
+      "projectStyle": "PackageReference",
+      "configFilePaths": [
+        "/Users/leonardoavila/.nuget/NuGet/NuGet.Config"
+      ],
+      "originalTargetFrameworks": [
+        "net6.0"
+      ],
+      "sources": {
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "projectReferences": {
+            "/Users/leonardoavila/Documents/repositories/food-totem/src/Core/Identity.Domain/Identity.Domain.csproj": {
+              "projectPath": "/Users/leonardoavila/Documents/repositories/food-totem/src/Core/Identity.Domain/Identity.Domain.csproj"
+            }
+          }
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      }
+    },
+    "frameworks": {
+      "net6.0": {
+        "targetAlias": "net6.0",
+        "imports": [
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48",
+          "net481"
+        ],
+        "assetTargetFallback": true,
+        "warn": true,
+        "frameworkReferences": {
+          "Microsoft.NETCore.App": {
+            "privateAssets": "all"
+          }
+        },
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/7.0.304/RuntimeIdentifierGraph.json"
+      }
+    }
+  }
+}

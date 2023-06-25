@@ -12,6 +12,13 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Core\Demand.Application\Demand.Application.csproj" />
+    <ProjectReference Include="..\..\..\Core\Identity.Application\Identity.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="Repositories\DemandContext\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Repositories\DemandContext\" />
+  </ItemGroup>
 </Project>
