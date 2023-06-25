@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace FoodTotem.Infra.Mappings.DemandContext
+namespace FoodTotem.Infra.Mappings.Demand
 {
     public class FoodMap : IEntityTypeConfiguration<Food>
     {

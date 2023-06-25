@@ -3,7 +3,7 @@ using Domain.Core;
 
 namespace Demand.Domain.Models
 {
-    public class Food : Entity
+    public class Food : Entity, IAggregateRoot
     {
         public string Name { get; private set; }
         public string Description { get; private set; }

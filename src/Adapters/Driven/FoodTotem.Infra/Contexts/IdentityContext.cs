@@ -1,13 +1,13 @@
 ﻿using Data.Core;
 using Demand.Domain.Models;
-using FoodTotem.Infra.Mappings.DemandContext;
+using FoodTotem.Infra.Mappings.Identity;
 using Microsoft.EntityFrameworkCore;
 
-namespace FoodTotem.Infra.Context
+namespace FoodTotem.Infra.Contexts
 {
-    public class DemandContext : DbContext, IUnitOfWork
+    public class IdentityContext : DbContext, IUnitOfWork
     {
-        public DemandContext(DbContextOptions<DemandContext> options) : base(options) 
+        public IdentityContext(DbContextOptions<IdentityContext> options) : base(options)
         {
             ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
             ChangeTracker.AutoDetectChangesEnabled = false;
@@ -17,10 +17,8 @@ namespace FoodTotem.Infra.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.HasDefaultSchema("Demand");
-            modelBuilder.ApplyConfiguration(new OrderMap());
-            modelBuilder.ApplyConfiguration(new OrderFoodMap());
-            modelBuilder.ApplyConfiguration(new FoodMap());
+            modelBuilder.HasDefaultSchema("Identity");
+            modelBuilder.ApplyConfiguration(new CustomerMap());
 
             base.OnModelCreating(modelBuilder);
         }
@@ -33,3 +31,4 @@ namespace FoodTotem.Infra.Context
         }
     }
 }
+

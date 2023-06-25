@@ -1,4 +1,4 @@
-using FoodTotem.Infra.Context;
+using FoodTotem.Infra.Contexts;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -27,8 +27,10 @@ var app = builder.Build();
 
 using (var serviceScope = app.Services.CreateScope())
 {
-    var context = serviceScope.ServiceProvider.GetService<IdentityContext>();
-    context.Database.Migrate();
+    var demandContext = serviceScope.ServiceProvider.GetService<DemandContext>();
+    demandContext!.Database.Migrate();
+    var identityContext = serviceScope.ServiceProvider.GetService<IdentityContext>();
+    identityContext!.Database.Migrate();
 }
 
 // Configure the HTTP request pipeline.

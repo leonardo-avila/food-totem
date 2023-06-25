@@ -3,7 +3,7 @@ using Domain.Core;
 
 namespace Identity.Domain.Models
 {
-    public class Customer : Entity
+    public class Customer : Entity, IAggregateRoot
     {
         public string? Email { get; private set; }
         public string? CPF { get; private set; }
@@ -17,6 +17,8 @@ namespace Identity.Domain.Models
             else if (authenticationType == AuthenticationTypeEnum.Email) Email = identification;
             else if (authenticationType == AuthenticationTypeEnum.CPF) CPF = identification;
         }
+
+        protected Customer() { } // EF constructor
 
         public override string ToString()
         {

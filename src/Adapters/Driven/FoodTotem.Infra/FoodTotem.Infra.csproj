@@ -16,9 +16,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Repositories\DemandContext\" />
+    <None Remove="Repositories\Demand\" />
+    <None Remove="Repositories\Identity\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Repositories\DemandContext\" />
+    <Folder Include="Repositories\Demand\" />
+    <Folder Include="Repositories\Identity\" />
   </ItemGroup>
 </Project>

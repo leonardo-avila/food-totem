@@ -2,6 +2,19 @@
   "version": 3,
   "targets": {
     "net6.0": {
+      "Data.Core/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "dependencies": {
+          "Domain.Core": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/Data.Core.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Data.Core.dll": {}
+        }
+      },
       "Domain.Core/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
@@ -28,6 +41,11 @@
     }
   },
   "libraries": {
+    "Data.Core/1.0.0": {
+      "type": "project",
+      "path": "../Data.Core/Data.Core.csproj",
+      "msbuildProject": "../Data.Core/Data.Core.csproj"
+    },
     "Domain.Core/1.0.0": {
       "type": "project",
       "path": "../Domain.Core/Domain.Core.csproj",
@@ -41,6 +59,7 @@
   },
   "projectFileDependencyGroups": {
     "net6.0": [
+      "Data.Core >= 1.0.0",
       "Identity.Domain >= 1.0.0"
     ]
   },
@@ -69,6 +88,9 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
+            "/Users/leonardoavila/Documents/repositories/food-totem/src/Core/Data.Core/Data.Core.csproj": {
+              "projectPath": "/Users/leonardoavila/Documents/repositories/food-totem/src/Core/Data.Core/Data.Core.csproj"
+            },
             "/Users/leonardoavila/Documents/repositories/food-totem/src/Core/Identity.Domain/Identity.Domain.csproj": {
               "projectPath": "/Users/leonardoavila/Documents/repositories/food-totem/src/Core/Identity.Domain/Identity.Domain.csproj"
             }

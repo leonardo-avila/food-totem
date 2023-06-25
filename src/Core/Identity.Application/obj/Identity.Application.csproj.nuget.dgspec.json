@@ -4,6 +4,63 @@
     "/Users/leonardoavila/Documents/repositories/food-totem/src/Core/Identity.Application/Identity.Application.csproj": {}
   },
   "projects": {
+    "/Users/leonardoavila/Documents/repositories/food-totem/src/Core/Data.Core/Data.Core.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/leonardoavila/Documents/repositories/food-totem/src/Core/Data.Core/Data.Core.csproj",
+        "projectName": "Data.Core",
+        "projectPath": "/Users/leonardoavila/Documents/repositories/food-totem/src/Core/Data.Core/Data.Core.csproj",
+        "packagesPath": "/Users/leonardoavila/.nuget/packages/",
+        "outputPath": "/Users/leonardoavila/Documents/repositories/food-totem/src/Core/Data.Core/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/leonardoavila/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {
+              "/Users/leonardoavila/Documents/repositories/food-totem/src/Core/Domain.Core/Domain.Core.csproj": {
+                "projectPath": "/Users/leonardoavila/Documents/repositories/food-totem/src/Core/Domain.Core/Domain.Core.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/7.0.304/RuntimeIdentifierGraph.json"
+        }
+      }
+    },
     "/Users/leonardoavila/Documents/repositories/food-totem/src/Core/Domain.Core/Domain.Core.csproj": {
       "version": "1.0.0",
       "restore": {
@@ -79,6 +136,9 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
+              "/Users/leonardoavila/Documents/repositories/food-totem/src/Core/Data.Core/Data.Core.csproj": {
+                "projectPath": "/Users/leonardoavila/Documents/repositories/food-totem/src/Core/Data.Core/Data.Core.csproj"
+              },
               "/Users/leonardoavila/Documents/repositories/food-totem/src/Core/Identity.Domain/Identity.Domain.csproj": {
                 "projectPath": "/Users/leonardoavila/Documents/repositories/food-totem/src/Core/Identity.Domain/Identity.Domain.csproj"
               }

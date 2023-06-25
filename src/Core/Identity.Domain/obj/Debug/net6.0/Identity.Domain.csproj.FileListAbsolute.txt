@@ -1,0 +1,15 @@
+/Users/leonardoavila/Documents/repositories/food-totem/src/Core/Identity.Domain/bin/Debug/net6.0/Identity.Domain.deps.json
+/Users/leonardoavila/Documents/repositories/food-totem/src/Core/Identity.Domain/bin/Debug/net6.0/Identity.Domain.dll
+/Users/leonardoavila/Documents/repositories/food-totem/src/Core/Identity.Domain/bin/Debug/net6.0/Identity.Domain.pdb
+/Users/leonardoavila/Documents/repositories/food-totem/src/Core/Identity.Domain/bin/Debug/net6.0/Domain.Core.dll
+/Users/leonardoavila/Documents/repositories/food-totem/src/Core/Identity.Domain/bin/Debug/net6.0/Domain.Core.pdb
+/Users/leonardoavila/Documents/repositories/food-totem/src/Core/Identity.Domain/obj/Debug/net6.0/Identity.Domain.csproj.AssemblyReference.cache
+/Users/leonardoavila/Documents/repositories/food-totem/src/Core/Identity.Domain/obj/Debug/net6.0/Identity.Domain.GeneratedMSBuildEditorConfig.editorconfig
+/Users/leonardoavila/Documents/repositories/food-totem/src/Core/Identity.Domain/obj/Debug/net6.0/Identity.Domain.AssemblyInfoInputs.cache
+/Users/leonardoavila/Documents/repositories/food-totem/src/Core/Identity.Domain/obj/Debug/net6.0/Identity.Domain.AssemblyInfo.cs
+/Users/leonardoavila/Documents/repositories/food-totem/src/Core/Identity.Domain/obj/Debug/net6.0/Identity.Domain.csproj.CoreCompileInputs.cache
+/Users/leonardoavila/Documents/repositories/food-totem/src/Core/Identity.Domain/obj/Debug/net6.0/Identity.Domain.csproj.CopyComplete
+/Users/leonardoavila/Documents/repositories/food-totem/src/Core/Identity.Domain/obj/Debug/net6.0/Identity.Domain.dll
+/Users/leonardoavila/Documents/repositories/food-totem/src/Core/Identity.Domain/obj/Debug/net6.0/refint/Identity.Domain.dll
+/Users/leonardoavila/Documents/repositories/food-totem/src/Core/Identity.Domain/obj/Debug/net6.0/Identity.Domain.pdb
+/Users/leonardoavila/Documents/repositories/food-totem/src/Core/Identity.Domain/obj/Debug/net6.0/ref/Identity.Domain.dll
