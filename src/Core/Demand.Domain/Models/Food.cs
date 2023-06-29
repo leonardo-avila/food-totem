@@ -11,7 +11,7 @@ namespace Demand.Domain.Models
         public double Price { get; private set; }
         public FoodCategoryEnum Category { get; private set; }
         public List<OrderFood>? Orders { get; private set; }
-        
+
         public Food(string name, string description, string imageUrl, double price, FoodCategoryEnum category)
         {
             Name = name;
@@ -22,5 +22,29 @@ namespace Demand.Domain.Models
         }
         protected Food() { } // EF constructor
 
+        public void UpdateName(string newName)
+        {
+            if (!string.IsNullOrEmpty(newName)) Name = newName;
+        }
+
+        public void UpdateDescription(string newDescription)
+        {
+            if (!string.IsNullOrEmpty(newDescription)) Description = newDescription;
+        }
+
+        public void UpdateImageUrl(string newImageUrl)
+        {
+            if (!string.IsNullOrEmpty(newImageUrl)) ImageUrl = newImageUrl;
+        }
+
+        public void UpdatePrice(double newPrice)
+        {
+            Price = newPrice;
+        }
+
+        public void UpdateCategory(FoodCategoryEnum newCategory)
+        {
+            Category = newCategory;
+        }
     }
 }

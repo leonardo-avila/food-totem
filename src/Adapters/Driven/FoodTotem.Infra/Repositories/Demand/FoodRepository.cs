@@ -1,6 +1,7 @@
 ﻿using Data.Core;
 using Demand.Application.Ports;
 using Demand.Domain.Models;
+using Demand.Domain.Models.Enums;
 using FoodTotem.Infra.Contexts;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,6 +23,16 @@ namespace FoodTotem.Infra.Repositories.Demand
         public async Task<IEnumerable<Food>> GetFoods()
         {
             return await DbSet.ToListAsync();
+        }
+
+        public async Task<Food> GetFood(Guid id)
+        {
+            return await DbSet.FindAsync(id);
+        }
+
+        public async Task<IEnumerable<Food>> GetFoodsByCategory(FoodCategoryEnum category)
+        {
+            return await DbSet.Where(f => f.Category.Equals(category)).ToListAsync();
         }
 
         public void AddFood(Food food)

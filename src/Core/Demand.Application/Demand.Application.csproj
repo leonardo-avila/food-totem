@@ -11,4 +11,10 @@
     <ProjectReference Include="..\Demand.Domain\Demand.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="ViewModels\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ViewModels\" />
+  </ItemGroup>
 </Project>

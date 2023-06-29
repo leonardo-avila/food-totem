@@ -6,5 +6,7 @@ namespace Demand.Domain.Services
     {
         Task<Order> GetOrder(Guid id);
         Task<IEnumerable<Order>> GetOrders();
+        Task<IEnumerable<Order>> GetQueuedOrders();
+        Task<bool> UpdateOrder(Order order);
     }
 }

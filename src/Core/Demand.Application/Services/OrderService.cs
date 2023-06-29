@@ -1,5 +1,6 @@
 ﻿using Demand.Application.Ports;
 using Demand.Domain.Models;
+using Demand.Domain.Models.Enums;
 using Demand.Domain.Services;
 
 namespace Demand.Application.Services
@@ -21,6 +22,17 @@ namespace Demand.Application.Services
         public async Task<Order> GetOrder(Guid id)
         {
             return await _orderRepository.GetOrder(id);
+        }
+
+        public async Task<IEnumerable<Order>> GetQueuedOrders()
+        {
+            return await _orderRepository.GetOrderByStatus(OrderStatusEnum.Preparing);
+        }
+
+        public async Task<bool> UpdateOrder(Order order)
+        {
+            _orderRepository.UpdateOrder(order);
+            return await _orderRepository.UnitOfWork.Commit();
         }
     }
 }

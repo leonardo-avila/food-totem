@@ -35,7 +35,10 @@ using (var serviceScope = app.Services.CreateScope())
 
 // Configure the HTTP request pipeline.
 app.UseSwagger();
-app.UseSwaggerUI();
+app.UseSwaggerUI(s =>
+{
+    s.RoutePrefix = string.Empty;
+});
 
 app.UseAuthorization();
 
