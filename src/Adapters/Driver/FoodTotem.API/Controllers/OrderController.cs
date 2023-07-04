@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace FoodTotem.API.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     public class OrderController : ControllerBase
     {
         private readonly ILogger<OrderController> _logger;
@@ -43,5 +43,7 @@ namespace FoodTotem.API.Controllers
         {
             return Ok(_orderService.GetQueuedOrders());
         }
+
+        
     }
 }

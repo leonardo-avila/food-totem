@@ -24,6 +24,11 @@ namespace FoodTotem.Infra.Repositories.Identity
             return await DbSet.ToListAsync();
         }
 
+        public async Task<Customer> GetCustomer(Guid id)
+        {
+            return await DbSet.FindAsync(id);
+        }
+
         public async Task<Customer> GetCustomerByCPF(string customerCPF)
         {
             return await DbSet.AsNoTracking().FirstOrDefaultAsync(c => c.CPF.Equals(customerCPF));

@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FoodTotem.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class FoodController : ControllerBase
     {
@@ -56,10 +56,13 @@ namespace FoodTotem.API.Controllers
             return NotFound("Could not found food with the specified id");
         }
 
-        [HttpGet("category:FoodCategoryEnum", Name = "Get foods by category")]
-        public async Task<IActionResult> GetFoodsByCategory(FoodCategoryEnum category)
+        [HttpGet(Name = "Get foods by category")]
+        public async Task<IActionResult> GetFoodsByCategory(string category)
         {
-            return Ok(await _foodService.GetFoodsByCategory(category));
+            FoodCategoryEnum categoryEnum;
+            var existentCategory = Enum.TryParse(category, false, out categoryEnum);
+            if (!existentCategory) return BadRequest("Invalid category");
+            return Ok(await _foodService.GetFoodsByCategory(categoryEnum));
         }
     }
 }
