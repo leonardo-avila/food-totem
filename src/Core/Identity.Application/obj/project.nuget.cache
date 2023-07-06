@@ -1,8 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "MxBCTkyKs7a2kJiwxluj4U301NA8yTk1duLXr/cKgIzA1sMCHIaF4ekCBOpyRb0QPEK/ildQcy41p6t1THKMSg==",
+  "dgSpecHash": "ejUHO64/jtgzG0i4sbTsMtFdACGhgwNkSAsJInJIAvvG2q6Yi12iTs72ZP9lMBf4joaiOV409VfGElMqzCQQOQ==",
   "success": true,
   "projectFilePath": "/Users/leonardoavila/Documents/repositories/food-totem/src/Core/Identity.Application/Identity.Application.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "/Users/leonardoavila/.nuget/packages/fluentvalidation/11.5.1/fluentvalidation.11.5.1.nupkg.sha512",
+    "/Users/leonardoavila/.nuget/packages/fluentvalidation.aspnetcore/11.3.0/fluentvalidation.aspnetcore.11.3.0.nupkg.sha512",
+    "/Users/leonardoavila/.nuget/packages/fluentvalidation.dependencyinjectionextensions/11.5.1/fluentvalidation.dependencyinjectionextensions.11.5.1.nupkg.sha512",
+    "/Users/leonardoavila/.nuget/packages/microsoft.extensions.dependencyinjection.abstractions/2.1.0/microsoft.extensions.dependencyinjection.abstractions.2.1.0.nupkg.sha512"
+  ],
   "logs": []
 }

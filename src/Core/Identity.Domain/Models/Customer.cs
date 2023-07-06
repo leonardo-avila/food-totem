@@ -16,6 +16,7 @@ namespace Identity.Domain.Models
             if (authenticationType == AuthenticationTypeEnum.Anonymous) Protocol = Guid.NewGuid();
             else if (authenticationType == AuthenticationTypeEnum.Email) Email = identification;
             else if (authenticationType == AuthenticationTypeEnum.CPF) CPF = identification;
+
         }
 
         protected Customer() { } // EF constructor

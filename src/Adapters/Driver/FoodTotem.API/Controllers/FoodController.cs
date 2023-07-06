@@ -2,6 +2,7 @@ using Demand.Application.ViewModels;
 using Demand.Domain.Models;
 using Demand.Domain.Models.Enums;
 using Demand.Domain.Services;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FoodTotem.API.Controllers
@@ -12,12 +13,15 @@ namespace FoodTotem.API.Controllers
     {
         private readonly ILogger<FoodController> _logger;
         private readonly IFoodService _foodService;
+        private readonly IValidator<Food> _foodValidator;
 
         public FoodController(ILogger<FoodController> logger,
-            IFoodService foodService)
+            IFoodService foodService,
+            IValidator<Food> foodValidator)
         {
             _logger = logger;
             _foodService = foodService;
+            _foodValidator = foodValidator;
         }
 
         [HttpPost(Name = "Add new food")]
@@ -30,7 +34,16 @@ namespace FoodTotem.API.Controllers
                 foodViewModel.Price,
                 (FoodCategoryEnum)Enum.Parse(typeof(FoodCategoryEnum), foodViewModel.Category)
                 );
-            return Ok(_foodService.AddFood(food));
+            var validationResult = _foodValidator.Validate(food);
+
+            if (validationResult.IsValid)
+            {
+                return Ok(_foodService.AddFood(food));
+            }
+            else
+            {
+                return BadRequest(validationResult.ToString());
+            }
         }
 
         [HttpPut("{id:Guid}", Name = "Update a food")]
