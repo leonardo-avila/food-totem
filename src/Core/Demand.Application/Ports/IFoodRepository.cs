@@ -9,9 +9,9 @@ namespace Demand.Application.Ports
 		Task<IEnumerable<Food>> GetFoods();
 		Task<IEnumerable<Food>> GetFoodsByCategory(FoodCategoryEnum category);
 		Task<Food> GetFood(Guid id);
-		void AddFood(Food food);
-		void UpdateFood(Food food);
-		void RemoveFood(Food food); 
+		Task<bool> AddFood(Food food);
+		Task<bool> UpdateFood(Food food);
+		Task<bool> RemoveFood(Food food); 
 	}
 }
 

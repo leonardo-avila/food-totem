@@ -21,8 +21,7 @@ namespace Demand.Application.Services
 
 		public async Task<bool> AddFood(Food food)
 		{
-			_foodRepository.AddFood(food);
-			return await _foodRepository.UnitOfWork.Commit();
+			return await _foodRepository.AddFood(food);
 		}
 
 		public async Task<Food> GetFood(Guid id)
@@ -37,16 +36,14 @@ namespace Demand.Application.Services
 
 		public async Task<bool> UpdateFood(Food food)
 		{
-			_foodRepository.UpdateFood(food);
-			return await _foodRepository.UnitOfWork.Commit();
+			return await _foodRepository.UpdateFood(food);
 		}
 
 		public async Task<bool> DeleteFood(Guid id)
 		{
 			var food = await _foodRepository.GetFood(id);
 			if (food is null) return false;
-			_foodRepository.RemoveFood(food);
-			return await _foodRepository.UnitOfWork.Commit();
+			return await _foodRepository.RemoveFood(food);
 		}
 		
 	}

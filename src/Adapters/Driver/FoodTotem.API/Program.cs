@@ -22,6 +22,7 @@ builder.Services.AddDatabaseConfiguration(builder.Configuration);
 
 // Dependency Injection
 builder.Services.AddDemandServices();
+builder.Services.AddIdentityServices();
 
 var app = builder.Build();
 

@@ -7,7 +7,7 @@ namespace Demand.Domain.Models
     {
         public string Customer { get; private set; }
         public OrderStatusEnum OrderStatus { get; private set; } = OrderStatusEnum.Received;
-        public PaymentStatus PaymentStatus { get; private set; } = PaymentStatus.Pending;
+        public PaymentStatusEnum PaymentStatus { get; private set; } = PaymentStatusEnum.Pending;
         public DateTime OrderDate { get; private set; } = DateTime.Now;
         public DateTime LastStatusDate { get; private set; }
         public List<OrderFood> Combo { get; private set; } = new List<OrderFood>();
@@ -33,9 +33,14 @@ namespace Demand.Domain.Models
             LastStatusDate = DateTime.Now;
         }
 
-        public void SetPaymentStatus(PaymentStatus paymentStatus)
+        public void SetPaymentStatus(PaymentStatusEnum paymentStatus)
         {
             PaymentStatus = paymentStatus;
+        }
+
+        public void SetCombo(List<OrderFood> combo)
+        {
+            Combo = combo;
         }
 
     }

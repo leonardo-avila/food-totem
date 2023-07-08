@@ -35,19 +35,22 @@ namespace FoodTotem.Infra.Repositories.Demand
             return await DbSet.Where(f => f.Category.Equals(category)).ToListAsync();
         }
 
-        public void AddFood(Food food)
+        public Task<bool> AddFood(Food food)
         {
             DbSet.Add(food);
+            return UnitOfWork.Commit();
         }
 
-        public void UpdateFood(Food food)
+        public Task<bool> UpdateFood(Food food)
         {
             DbSet.Update(food);
+            return UnitOfWork.Commit();
         }
 
-        public void RemoveFood(Food food)
+        public Task<bool> RemoveFood(Food food)
         {
             DbSet.Remove(food);
+            return UnitOfWork.Commit();
         }
 
         public void Dispose()

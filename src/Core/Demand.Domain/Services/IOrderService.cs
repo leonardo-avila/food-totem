@@ -8,5 +8,6 @@ namespace Demand.Domain.Services
         Task<IEnumerable<Order>> GetOrders();
         Task<IEnumerable<Order>> GetQueuedOrders();
         Task<bool> UpdateOrder(Order order);
+        Task<bool> AddOrder(Order order);
     }
 }

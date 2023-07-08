@@ -1,12 +1,14 @@
-﻿namespace Demand.Application.ViewModels
+﻿using Demand.Domain.Models.Enums;
+
+namespace Demand.Application.ViewModels
 {
 	public class FoodViewModel
 	{
-		public string Name;
-		public string Category;
-		public string Description;
-		public double Price;
-		public string ImageUrl;
+		public string Name { get; set; }
+		public FoodCategoryEnum Category { get; set; }
+		public string Description { get; set; }
+		public double Price { get; set; }
+		public string ImageUrl { get; set; }
 	}
 }
 

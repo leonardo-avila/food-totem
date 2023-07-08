@@ -6,7 +6,11 @@ namespace Demand.Domain.Models.Validators
 	{
 		public FoodValidator()
 		{
-
+			RuleFor(f => f.Name).NotNull();
+			RuleFor(f => f.Description).NotNull();
+			RuleFor(f => f.ImageUrl).NotNull();
+			RuleFor(f => f.Price).GreaterThan(0).WithMessage("Food should have a positive price.");
+			RuleFor(f => f.Category).IsInEnum();
 		}
 	}
 }

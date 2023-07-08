@@ -1,7 +1,6 @@
 using FluentValidation;
 using Identity.Application.ViewModels;
 using Identity.Domain.Models;
-using Identity.Domain.Models.Validators;
 using Identity.Domain.Services;
 using Microsoft.AspNetCore.Mvc;
 

@@ -34,5 +34,11 @@ namespace Demand.Application.Services
             _orderRepository.UpdateOrder(order);
             return await _orderRepository.UnitOfWork.Commit();
         }
+
+        public async Task<bool> AddOrder(Order order)
+        {
+            _orderRepository.AddOrder(order);
+            return await _orderRepository.UnitOfWork.Commit();
+        }
     }
 }
