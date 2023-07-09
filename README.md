@@ -13,11 +13,11 @@ The application will be available on `http://localhost:8080/swagger/index.html`.
 
 At this point, API doesn't control the payment method with real payment gateways. So, to simulate a checkout, you can use the following endpoint:
 
-```/Payment/{orderId}```
+```api/Payment/{orderId}```
 
 on Swagger. This endpoint will simulate a payment and will change the order status to `Preparing` and order payment status to `Approved`, that means that payment was made and the order was sent to the kitchen.
 
-After that, using the endpoint ```/Order/queued``` you can see the orders in the kitchen queue.
+After that, using the endpoint ```api/Order/queued``` you can see the orders in the kitchen queue.
 
 ## Observations
 

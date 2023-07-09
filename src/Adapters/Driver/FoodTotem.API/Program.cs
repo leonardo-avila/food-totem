@@ -24,7 +24,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Food Totem API", Version = "v1" });
-    var filePath = Path.Combine(AppContext.BaseDirectory, "FoodTotemAPI.xml");
+    var filePath = Path.Combine(AppContext.BaseDirectory, "FoodTotem.API.xml");
     c.IncludeXmlComments(filePath);
 });
 
