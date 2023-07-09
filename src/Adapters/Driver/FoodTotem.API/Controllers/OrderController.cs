@@ -2,6 +2,7 @@ using Demand.Application.ViewModels;
 using Demand.Domain.Models;
 using Demand.Domain.Services;
 using FluentValidation;
+using Identity.Domain.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FoodTotem.API.Controllers
@@ -28,9 +29,9 @@ namespace FoodTotem.API.Controllers
         /// </summary>
         /// <returns>Returns all orders</returns>
         [HttpGet(Name = "Get Orders")]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
-            return Ok(_orderService.GetOrders());
+            return Ok(await _orderService.GetOrders());
         }
 
         /// <summary>
@@ -39,22 +40,27 @@ namespace FoodTotem.API.Controllers
         /// <param name="id"></param>
         /// <returns>Returns the order with the specified id</returns>
         [HttpGet("{id:Guid}", Name = "Get Order By Id")]
-        public IActionResult GetById(Guid id)
+        public async Task<IActionResult> GetById(Guid id)
         {
-            return Ok(_orderService.GetOrder(id));
+            return Ok(await _orderService.GetOrder(id));
         }
 
         [HttpGet("queued", Name = "Get queued orders")]
-        public IActionResult GetQueuedOrders()
+        public async Task<IActionResult> GetQueuedOrders()
         {
-            return Ok(_orderService.GetQueuedOrders());
+            return Ok(await _orderService.GetQueuedOrders());
         }
 
         [HttpPost(Name = "Add new order")]
         public async Task<IActionResult> AddOrder(OrderViewModel orderViewModel)
         {
             var order = new Order(orderViewModel.Customer);
-            order.SetCombo(orderViewModel.Combo);
+            var combo = new List<OrderFood>();
+            foreach (var food in orderViewModel.Combo)
+            {
+                combo.Add(new OrderFood(food.FoodId, food.Quantity));
+            }
+            order.SetCombo(combo);
             var validationResult = _orderValidator.Validate(order);
             if (validationResult.IsValid)
             {
@@ -63,6 +69,16 @@ namespace FoodTotem.API.Controllers
                 return BadRequest("An error occurred while adding order.");
             }
             return BadRequest(validationResult.ToString());
+        }
+
+        [HttpDelete("{id:Guid}", Name = "Delete a order")]
+        public async Task<IActionResult> DeleteOrder(Guid id)
+        {
+            var order = await _orderService.GetOrder(id);
+            if (order is null) return NotFound("Could not found order with the specified id");
+            var successful = await _orderService.DeleteOrder(order);
+            if (successful) return Ok("Order deleted successfully");
+            return BadRequest("An error occurred while deleting order.");
         }
     }
 }

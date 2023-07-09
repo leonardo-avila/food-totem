@@ -17,14 +17,14 @@ namespace Demand.Domain.Models
         }
         protected Order() { } // EF constructor
 
-        public void AddFood(Food food)
+        public void AddFood(Food food, int quantity)
         {
-            Combo.Add(new OrderFood(food.Id, Id));
+            Combo.Add(new OrderFood(food.Id, Id, quantity));
         }
 
         public double GetTotal()
         {
-            return Combo.Sum(x => x.Food.Price);
+            return Combo.Sum(x => x.Food.Price * x.Quantity);
         }
 
         public void SetOrderStatus(OrderStatusEnum orderStatus)

@@ -8,6 +8,7 @@ namespace Identity.Application.Ports
 		void Add(Customer customer);
 		Task<Customer> GetCustomer(Guid id);
 		Task<Customer> GetCustomerByCPF(string customerCPF);
+		Task<IEnumerable<Customer>> GetCustomers();
 		void Update(Customer customer);
 		void Remove(Customer customer);
 

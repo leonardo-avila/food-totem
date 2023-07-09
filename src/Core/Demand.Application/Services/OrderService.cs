@@ -8,10 +8,13 @@ namespace Demand.Application.Services
     public class OrderService : IOrderService
     {
         private readonly IOrderRepository _orderRepository;
+        private readonly IFoodRepository _foodRepository;
 
-        public OrderService(IOrderRepository orderRepository)
+        public OrderService(IOrderRepository orderRepository,
+            IFoodRepository foodRepository)
         {
             _orderRepository = orderRepository;
+            _foodRepository = foodRepository;
         }
 
         public async Task<IEnumerable<Order>> GetOrders() 
@@ -31,14 +34,29 @@ namespace Demand.Application.Services
 
         public async Task<bool> UpdateOrder(Order order)
         {
-            _orderRepository.UpdateOrder(order);
-            return await _orderRepository.UnitOfWork.Commit();
+            return await _orderRepository.UpdateOrder(order);
         }
 
         public async Task<bool> AddOrder(Order order)
         {
-            _orderRepository.AddOrder(order);
-            return await _orderRepository.UnitOfWork.Commit();
+            var isValidFoods = await CheckFoods(order.Combo);
+            if (!isValidFoods) return false;
+            return await _orderRepository.AddOrder(order);
+        }
+
+        public async Task<bool> DeleteOrder(Order order)
+        {
+            return await _orderRepository.RemoveOrder(order);
+        }
+
+        private async Task<bool> CheckFoods(List<OrderFood> combo)
+        {
+            var foodsInService = await _foodRepository.GetFoods();
+            foreach (var food in combo)
+            {
+                if (!foodsInService.Select(f => f.Id).Contains(food.FoodId)) return false;
+            }
+            return true;
         }
     }
 }

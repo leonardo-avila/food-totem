@@ -22,7 +22,9 @@ namespace FoodTotem.Infra.Repositories.Demand
 
         public async Task<IEnumerable<Order>> GetOrders()
         {
-            return await DbSet.ToListAsync();
+            return await DbSet.Include(o => o.Combo)
+                .ThenInclude(c => c.Food)
+                .ToListAsync();
         }
 
         public async Task<IEnumerable<Order>> GetOrdersByCustomer(string customer)
@@ -32,27 +34,34 @@ namespace FoodTotem.Infra.Repositories.Demand
 
         public async Task<Order> GetOrder(Guid orderId)
         {
-            return await DbSet.FindAsync(orderId);
+            return await DbSet.Include(o => o.Combo)
+                .ThenInclude(c => c.Food)
+                .FirstOrDefaultAsync(o => o.Id.Equals(orderId));
         }
 
         public async Task<IEnumerable<Order>> GetOrderByStatus(OrderStatusEnum orderStatus)
         {
-            return await DbSet.Where(o => o.OrderStatus.Equals(orderStatus)).ToListAsync();
+            return await DbSet.Include(o => o.Combo)
+                .ThenInclude(c => c.Food)
+                .Where(o => o.OrderStatus.Equals(orderStatus)).ToListAsync();
         }
 
-        public void AddOrder(Order order)
+        public async Task<bool> AddOrder(Order order)
         {
             DbSet.Add(order);
+            return await UnitOfWork.Commit();
         }
 
-        public void UpdateOrder(Order order)
+        public async Task<bool> UpdateOrder(Order order)
         {
             DbSet.Update(order);
+            return await UnitOfWork.Commit();
         }
 
-        public void RemoveOrder(Order order)
+        public async Task<bool> RemoveOrder(Order order)
         {
             DbSet.Remove(order);
+            return await UnitOfWork.Commit();
         }
 
         public void Dispose()

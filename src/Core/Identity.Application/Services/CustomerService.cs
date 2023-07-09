@@ -30,6 +30,10 @@ namespace Identity.Application.Services
 		{
 			return await _customerRepository.GetCustomerByCPF(cpf);
 		}
+		public async Task<IEnumerable<Customer>> GetCustomers()
+		{
+			return await _customerRepository.GetCustomers();
+		}
 
 	}
 }

@@ -9,8 +9,8 @@ namespace Demand.Application.Ports
         Task<IEnumerable<Order>> GetOrders();
         Task<Order> GetOrder(Guid id);
         Task<IEnumerable<Order>> GetOrderByStatus(OrderStatusEnum orderStatus);
-        void AddOrder(Order order);
-        void UpdateOrder(Order order);
-        void RemoveOrder(Order order);
+        Task<bool> AddOrder(Order order);
+        Task<bool> UpdateOrder(Order order);
+        Task<bool> RemoveOrder(Order order);
     }
 }

@@ -35,10 +35,7 @@ namespace FoodTotem.API.Controllers
                 if (successful) return Ok("Customer added succesfuly");
                 return BadRequest("An error occurred while adding customer");
             }
-            else
-            {
-                return BadRequest(validationResult.ToString());
-            }
+            return BadRequest(validationResult.ToString());
         }
 
         [HttpDelete("{id:Guid}", Name = "Delete a customer")]
@@ -52,10 +49,25 @@ namespace FoodTotem.API.Controllers
             return NotFound("Could not found customer with the specified id");
         }
 
-        [HttpGet(Name = "Get customer by CPF")]
+        [HttpGet("{cpf}", Name = "Get customer by CPF")]
         public async Task<IActionResult> GetCustomerByCPF(string cpf)
         {
-            return Ok(await _customerService.GetCustomerByCPF(cpf));
+            var customer = await _customerService.GetCustomerByCPF(cpf);
+            if (customer is null) return NotFound("Could not found customer with the specified id");
+
+            return Ok(customer);
+        }
+
+        [HttpGet(Name = "Get all customers")]
+        public async Task<ActionResult<IEnumerable<Customer>>> GetCustomers()
+        {
+            var customers = await _customerService.GetCustomers();
+            if (customers is null || customers.Count() == 0)
+            {
+                Response.StatusCode = StatusCodes.Status204NoContent;
+                return new List<Customer>();
+            }
+            return Ok(customers);
         }
     }
 }

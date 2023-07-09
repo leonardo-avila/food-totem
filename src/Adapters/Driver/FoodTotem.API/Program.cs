@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using FoodTotem.Infra.Contexts;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,7 +12,11 @@ builder.Configuration
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+});
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

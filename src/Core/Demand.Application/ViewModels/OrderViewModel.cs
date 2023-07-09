@@ -10,7 +10,7 @@ namespace Demand.Application.ViewModels
 		public PaymentStatusEnum PaymentStatus { get; set; }
 		public DateTime OrderDate { get; set; }
 		public DateTime LastStatusDate { get; set; }
-		public List<OrderFood> Combo { get; set; }
+		public List<OrderFoodViewModel> Combo { get; set; }
 	}
 }
 

@@ -7,6 +7,7 @@ namespace Identity.Domain.Services
 		Task<bool> AddCustomer(Customer customer);
 		Task<Customer> GetCustomerByCPF(string cpf);
 		Task<bool> DeleteCustomer(Guid id);
+		Task<IEnumerable<Customer>> GetCustomers();
 	}
 }
 

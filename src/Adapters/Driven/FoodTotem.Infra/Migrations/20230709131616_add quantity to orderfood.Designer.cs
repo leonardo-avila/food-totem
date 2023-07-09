@@ -3,6 +3,7 @@ using System;
 using FoodTotem.Infra.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FoodTotem.Infra.Migrations
 {
     [DbContext(typeof(DemandContext))]
-    partial class DemandContextModelSnapshot : ModelSnapshot
+    [Migration("20230709131616_add quantity to orderfood")]
+    partial class addquantitytoorderfood
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
