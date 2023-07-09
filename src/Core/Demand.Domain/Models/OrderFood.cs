@@ -8,17 +8,11 @@ namespace Demand.Domain.Models
         [JsonIgnore]
         public Guid FoodId { get; private set; }
         public Food Food { get; private set; }
+        [JsonIgnore]
         public Guid OrderId { get; private set; }
         [JsonIgnore]
         public Order Order { get; private set; }
         public int Quantity { get; private set; }
-
-        public OrderFood(Guid foodId, Guid orderId, int quantity)
-        {
-            FoodId = foodId;
-            OrderId = orderId;
-            Quantity = quantity;
-        }
 
         public OrderFood(Guid foodId, int quantity)
         {

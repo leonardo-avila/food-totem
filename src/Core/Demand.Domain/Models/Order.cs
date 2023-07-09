@@ -13,13 +13,15 @@ namespace Demand.Domain.Models
         public List<OrderFood> Combo { get; private set; } = new List<OrderFood>();
         public Order(string customer)
         {
-            Customer = customer;
+            if (string.IsNullOrEmpty(customer))
+                Customer = Id.ToString();
+            else Customer = customer;
         }
         protected Order() { } // EF constructor
 
         public void AddFood(Food food, int quantity)
         {
-            Combo.Add(new OrderFood(food.Id, Id, quantity));
+            Combo.Add(new OrderFood(food.Id, quantity));
         }
 
         public double GetTotal()

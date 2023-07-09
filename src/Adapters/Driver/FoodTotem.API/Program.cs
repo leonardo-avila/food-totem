@@ -1,6 +1,7 @@
 using System.Text.Json.Serialization;
 using FoodTotem.Infra.Contexts;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,11 +16,17 @@ builder.Configuration
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
     options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
 });
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Food Totem API", Version = "v1" });
+    var filePath = Path.Combine(AppContext.BaseDirectory, "FoodTotemAPI.xml");
+    c.IncludeXmlComments(filePath);
+});
 
 // Set DbContexts
 builder.Services.AddDatabaseConfiguration(builder.Configuration);
