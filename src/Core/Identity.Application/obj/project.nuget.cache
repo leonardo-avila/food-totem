@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "ejUHO64/jtgzG0i4sbTsMtFdACGhgwNkSAsJInJIAvvG2q6Yi12iTs72ZP9lMBf4joaiOV409VfGElMqzCQQOQ==",
+  "dgSpecHash": "y/xH9CV0zp8gSdN/5lECEaRKHIBxyvE4SrvInftiZTlv8E26ll3VdKEPDxNzNtorQIcVQxNiy7Az6RDkK2vIkA==",
   "success": true,
   "projectFilePath": "/Users/leonardoavila/Documents/repositories/food-totem/src/Core/Identity.Application/Identity.Application.csproj",
   "expectedPackageFiles": [
