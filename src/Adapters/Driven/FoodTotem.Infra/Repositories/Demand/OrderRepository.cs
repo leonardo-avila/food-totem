@@ -1,26 +1,24 @@
 ﻿using Data.Core;
-using Demand.Application.Ports;
 using Demand.Domain.Models;
 using Demand.Domain.Models.Enums;
+using Demand.Domain.Repositories;
 using FoodTotem.Infra.Contexts;
 using Microsoft.EntityFrameworkCore;
 
 namespace FoodTotem.Infra.Repositories.Demand
 {
-    public class OrderRepository : IOrderRepository
+    public class OrderRepository : RepositoryBase<Order>, IOrderRepository
     {
         protected readonly DemandContext Db;
         protected readonly DbSet<Order> DbSet;
 
-        public OrderRepository(DemandContext context)
+        public OrderRepository(DemandContext context) : base (context)
         {
             Db = context;
             DbSet = Db.Set<Order>();
         }
 
-        public IUnitOfWork UnitOfWork => Db;
-
-        public async Task<IEnumerable<Order>> GetOrders()
+        public override async Task<IEnumerable<Order>> GetAll()
         {
             return await DbSet.Include(o => o.Combo)
                 .ThenInclude(c => c.Food)
@@ -32,7 +30,7 @@ namespace FoodTotem.Infra.Repositories.Demand
             return await DbSet.Where(o => o.Customer.Equals(customer)).ToListAsync();
         }
 
-        public async Task<Order> GetOrder(Guid orderId)
+        public override async Task<Order> Get(Guid orderId)
         {
             return await DbSet.Include(o => o.Combo)
                 .ThenInclude(c => c.Food)
@@ -44,29 +42,6 @@ namespace FoodTotem.Infra.Repositories.Demand
             return await DbSet.Include(o => o.Combo)
                 .ThenInclude(c => c.Food)
                 .Where(o => o.OrderStatus.Equals(orderStatus)).ToListAsync();
-        }
-
-        public async Task<bool> AddOrder(Order order)
-        {
-            DbSet.Add(order);
-            return await UnitOfWork.Commit();
-        }
-
-        public async Task<bool> UpdateOrder(Order order)
-        {
-            DbSet.Update(order);
-            return await UnitOfWork.Commit();
-        }
-
-        public async Task<bool> RemoveOrder(Order order)
-        {
-            DbSet.Remove(order);
-            return await UnitOfWork.Commit();
-        }
-
-        public void Dispose()
-        {
-            Db.Dispose();
         }
     }
 }

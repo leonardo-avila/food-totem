@@ -102,7 +102,7 @@ namespace FoodTotem.API.Controllers
         }
         #endregion
 
-         #region DELETE Endpoints
+        #region DELETE Endpoints
         /// <summary>
         /// Delete a food with the specified id
         /// </summary>

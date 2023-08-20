@@ -2,8 +2,12 @@
 
 namespace Data.Core
 {
-    public interface IRepository<T> : IDisposable where T : IAggregateRoot
+    public interface IRepository<T> : IDisposable where T : Entity
     {
-        IUnitOfWork UnitOfWork { get; }
+        Task<IEnumerable<T>> GetAll();
+        Task<T> Get(Guid id);
+        Task<bool> Create(T entity);
+        Task<bool> Update(T entity);
+        Task<bool> Delete(T entity);
     }
 }

@@ -15,15 +15,13 @@ namespace Identity.Application.Services
 
 		public async Task<bool> AddCustomer(Customer customer)
 		{
-			_customerRepository.Add(customer);
-			return await _customerRepository.UnitOfWork.Commit();
+			return await _customerRepository.Create(customer);
 		}
 
 		public async Task<bool> DeleteCustomer(Guid id)
 		{
-			var customer = await _customerRepository.GetCustomer(id);
-			_customerRepository.Remove(customer);
-			return await _customerRepository.UnitOfWork.Commit();
+			var customer = await _customerRepository.Get(id);
+			return await _customerRepository.Delete(customer);
 		}
 
 		public async Task<Customer> GetCustomerByCPF(string cpf)
@@ -32,7 +30,7 @@ namespace Identity.Application.Services
 		}
 		public async Task<IEnumerable<Customer>> GetCustomers()
 		{
-			return await _customerRepository.GetCustomers();
+			return await _customerRepository.GetAll();
 		}
 
 	}

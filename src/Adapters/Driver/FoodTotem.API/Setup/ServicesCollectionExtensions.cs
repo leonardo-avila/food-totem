@@ -1,7 +1,7 @@
-﻿using Demand.Application.Ports;
-using Demand.Application.Services;
+﻿using Demand.Application.Services;
 using Demand.Domain.Models;
 using Demand.Domain.Models.Validators;
+using Demand.Domain.Repositories;
 using Demand.Domain.Services;
 using FluentValidation;
 using FoodTotem.Infra.Repositories.Demand;
@@ -27,7 +27,6 @@ namespace Microsoft.Extensions.DependencyInjection
 
             services.AddScoped<IValidator<Food>, FoodValidator>();
             services.AddScoped<IValidator<Order>, OrderValidator>();
-
 
             return services;
         }

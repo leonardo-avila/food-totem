@@ -1,6 +1,6 @@
-﻿using Demand.Application.Ports;
-using Demand.Domain.Models;
+﻿using Demand.Domain.Models;
 using Demand.Domain.Models.Enums;
+using Demand.Domain.Repositories;
 using Demand.Domain.Services;
 
 namespace Demand.Application.Services
@@ -16,17 +16,17 @@ namespace Demand.Application.Services
 
 		public async Task<IEnumerable<Food>> GetFoods()
 		{
-			return await _foodRepository.GetFoods();
+			return await _foodRepository.GetAll();
 		}
 
 		public async Task<bool> AddFood(Food food)
 		{
-			return await _foodRepository.AddFood(food);
+			return await _foodRepository.Create(food);
 		}
 
 		public async Task<Food> GetFood(Guid id)
 		{
-			return await _foodRepository.GetFood(id);
+			return await _foodRepository.Get(id);
 		}
 
 		public async Task<IEnumerable<Food>> GetFoodsByCategory(FoodCategoryEnum category)
@@ -36,14 +36,14 @@ namespace Demand.Application.Services
 
 		public async Task<bool> UpdateFood(Food food)
 		{
-			return await _foodRepository.UpdateFood(food);
+			return await _foodRepository.Update(food);
 		}
 
 		public async Task<bool> DeleteFood(Guid id)
 		{
-			var food = await _foodRepository.GetFood(id);
+			var food = await _foodRepository.Get(id);
 			if (food is null) return false;
-			return await _foodRepository.RemoveFood(food);
+			return await _foodRepository.Delete(food);
 		}
 		
 	}

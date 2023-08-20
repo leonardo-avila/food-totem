@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FoodTotem.Infra.Contexts
 {
-    public class IdentityContext : DbContext, IUnitOfWork
+    public class IdentityContext : DbContext
     {
         public IdentityContext(DbContextOptions<IdentityContext> options) : base(options)
         {
@@ -20,13 +20,6 @@ namespace FoodTotem.Infra.Contexts
             modelBuilder.ApplyConfiguration(new CustomerMap());
 
             base.OnModelCreating(modelBuilder);
-        }
-
-        public async Task<bool> Commit()
-        {
-            var success = await SaveChangesAsync() > 0;
-
-            return success;
         }
     }
 }

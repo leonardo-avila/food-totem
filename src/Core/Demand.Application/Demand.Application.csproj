@@ -13,8 +13,10 @@
 
   <ItemGroup>
     <None Remove="ViewModels\" />
+    <None Remove="Ports\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ViewModels\" />
+    <Folder Include="Ports\" />
   </ItemGroup>
 </Project>

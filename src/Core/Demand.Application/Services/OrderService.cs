@@ -1,6 +1,6 @@
-﻿using Demand.Application.Ports;
-using Demand.Domain.Models;
+﻿using Demand.Domain.Models;
 using Demand.Domain.Models.Enums;
+using Demand.Domain.Repositories;
 using Demand.Domain.Services;
 
 namespace Demand.Application.Services
@@ -19,12 +19,12 @@ namespace Demand.Application.Services
 
         public async Task<IEnumerable<Order>> GetOrders() 
         {
-            return await _orderRepository.GetOrders();
+            return await _orderRepository.GetAll();
         }
 
         public async Task<Order> GetOrder(Guid id)
         {
-            return await _orderRepository.GetOrder(id);
+            return await _orderRepository.Get(id);
         }
 
         public async Task<IEnumerable<Order>> GetQueuedOrders()
@@ -34,27 +34,28 @@ namespace Demand.Application.Services
 
         public async Task<bool> UpdateOrder(Order order)
         {
-            return await _orderRepository.UpdateOrder(order);
+            return await _orderRepository.Update(order);
         }
 
         public async Task<bool> AddOrder(Order order)
         {
             var isValidFoods = await CheckFoods(order.Combo);
             if (!isValidFoods) return false;
-            return await _orderRepository.AddOrder(order);
+            return await _orderRepository.Create(order);
         }
 
         public async Task<bool> DeleteOrder(Order order)
         {
-            return await _orderRepository.RemoveOrder(order);
+            return await _orderRepository.Delete(order);
         }
 
         private async Task<bool> CheckFoods(List<OrderFood> combo)
         {
-            var foodsInService = await _foodRepository.GetFoods();
+            var foodsInService = await _foodRepository.GetAll();
             foreach (var food in combo)
             {
-                if (!foodsInService.Select(f => f.Id).Contains(food.FoodId)) return false;
+                if (!foodsInService.Select(f => f.Id)
+                    .Contains(food.FoodId)) return false;
             }
             return true;
         }
