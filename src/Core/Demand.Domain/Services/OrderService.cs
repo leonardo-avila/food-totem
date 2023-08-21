@@ -1,0 +1,52 @@
+﻿using Demand.Domain.Models;
+using Demand.Domain.Models.Enums;
+using Demand.Domain.Ports;
+using Domain.Core;
+using FluentValidation;
+
+namespace Demand.Domain.Services
+{
+	public class OrderService : IOrderService
+	{
+        private readonly IValidator<Order> _orderValidator;
+
+		public OrderService(IValidator<Order> orderValidator)
+		{
+            _orderValidator = orderValidator;
+        }
+
+		public bool IsValidOrder(Order order, IEnumerable<Food> foodsInService)
+		{
+            var validationResult = _orderValidator.Validate(order);
+            if (!validationResult.IsValid) throw new DomainException(validationResult.ToString());
+
+            var isValidFoods = CheckFoods(order.Combo, foodsInService);
+            if (!isValidFoods) throw new DomainException("This combo contains non-selled foods.");
+
+            return isValidFoods;
+        }
+
+        public IEnumerable<Order> FilterOngoingOrders(IEnumerable<Order> orders)
+        {
+            return orders.Where(o => o.OrderStatus != OrderStatusEnum.Completed)
+                .OrderBy(o => o.OrderDate)
+                .OrderByDescending(o => o.OrderStatus);
+        }
+
+        public bool IsValidOrderStatus(string orderStatus)
+        {
+            return Enum.IsDefined(typeof(OrderStatusEnum), orderStatus);
+        }
+
+        private static bool CheckFoods(List<OrderFood> combo, IEnumerable<Food> foodsInService)
+        {
+            foreach (var food in combo)
+            {
+                if (!foodsInService.Select(f => f.Id)
+                    .Contains(food.FoodId)) return false;
+            }
+            return true;
+        }
+    }
+}
+

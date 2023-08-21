@@ -1,8 +1,7 @@
+using Demand.Application.Ports;
 using Demand.Application.ViewModels;
 using Demand.Domain.Models;
-using Demand.Domain.Services;
-using FluentValidation;
-using Identity.Domain.Services;
+using Domain.Core;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FoodTotem.API.Controllers
@@ -12,16 +11,13 @@ namespace FoodTotem.API.Controllers
     public class OrderController : ControllerBase
     {
         private readonly ILogger<OrderController> _logger;
-        private readonly IOrderService _orderService;
-        private readonly IValidator<Order> _orderValidator;
+        private readonly IOrderAppService _orderAppService;
 
         public OrderController(ILogger<OrderController> logger,
-            IOrderService orderService,
-            IValidator<Order> orderValidator)
+            IOrderAppService orderAppService)
         {
             _logger = logger;
-            _orderService = orderService;
-            _orderValidator = orderValidator;
+            _orderAppService = orderAppService;
         }
 
         #region GET Endpoints
@@ -33,7 +29,7 @@ namespace FoodTotem.API.Controllers
         [HttpGet(Name = "Get Orders")]
         public async Task<ActionResult<IEnumerable<Order>>> GetOrders()
         {
-            var orders = await _orderService.GetOrders();
+            var orders = await _orderAppService.GetOrders();
             if (orders.Count() == 0) {
 
                 return NoContent();
@@ -50,7 +46,9 @@ namespace FoodTotem.API.Controllers
         [HttpGet("{id:Guid}", Name = "Get Order By Id")]
         public async Task<IActionResult> GetById(Guid id)
         {
-            return Ok(await _orderService.GetOrder(id));
+            var order = await _orderAppService.GetOrder(id);
+            if (order is null) return NotFound();
+            return Ok(order);
         }
 
         /// <summary>
@@ -61,36 +59,81 @@ namespace FoodTotem.API.Controllers
         [HttpGet("queued", Name = "Get queued orders")]
         public async Task<IActionResult> GetQueuedOrders()
         {
-            return Ok(await _orderService.GetQueuedOrders());
+            var queuedOrders = await _orderAppService.GetQueuedOrders();
+            if (!queuedOrders.Any())
+            {
+                return NoContent();
+            }
+            return Ok(queuedOrders);
+        }
+
+        /// <summary>
+        /// Get all ongoing orders ranked by date and status.
+        /// </summary>
+        /// <returns>Return all orders in course.</returns>
+        /// <response code="204">No orders found for the specified id.</response>
+        [HttpGet("ongoing", Name = "Get orders in progress")]
+        public async Task<IActionResult> GetOngoingOrders()
+        {
+            var ongoingOrders = await _orderAppService.GetOngoingOrders();
+            if (!ongoingOrders.Any())
+            {
+                return NoContent();
+            }
+            return Ok(ongoingOrders);
         }
         #endregion
 
         #region POST Endpoints
         /// <summary>
-        /// Add an order
+        /// Checkout an order
         /// </summary>
         /// <param name="orderViewModel">Represents the order details to be added</param>
-        /// <returns>Returns 200 if the order was succesfully added.</returns>
+        /// <returns>Returns 200 if the order was succesfully added and show details of the order.</returns>
         /// <response code="400">Order in invalid format. Model validations errors should be prompted when necessary.</response>
         /// <response code="500">Something wrong happened when adding order. Could be internet connection or database error.</response>
-        [HttpPost(Name = "Add new order")]
-        public async Task<IActionResult> AddOrder(OrderViewModel orderViewModel)
+        [HttpPost(Name = "Checkout order")]
+        public async Task<IActionResult> CheckoutOrder(OrderViewModel orderViewModel)
         {
-            var order = new Order(orderViewModel.Customer);
-            var combo = new List<OrderFood>();
-            foreach (var food in orderViewModel.Combo)
+            try
             {
-                combo.Add(new OrderFood(food.FoodId, food.Quantity));
+                return Ok(await _orderAppService.CheckoutOrder(orderViewModel));
             }
-            order.SetCombo(combo);
-            var validationResult = _orderValidator.Validate(order);
-            if (validationResult.IsValid)
+            catch (DomainException ex)
             {
-                var successful = await _orderService.AddOrder(order);
-                if (successful) return Ok("Order added successfully.");
+                return BadRequest(ex.Message);
+            }
+            catch
+            {
                 return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while adding order.");
             }
-            return BadRequest(validationResult.ToString());
+        }
+        #endregion
+
+        #region PUT Endpoints
+        /// <summary>
+        /// Update an order status
+        /// </summary>
+        /// <param name="newOrderStatus">Represents the order status be setted</param>
+        /// <response code="400">Order status invalid format.</response>
+        /// <response code="500">Something wrong happened when adding order. Could be internet connection or database error.</response>
+        [HttpPut("{id:Guid}", Name = "Update order status")]
+        public async Task<IActionResult> UpdateOrderStatus(Guid id, string newOrderStatus)
+        {
+            try
+            {
+                var order = await _orderAppService.GetOrder(id);
+                if (order is null) return NotFound();
+                return Ok(await _orderAppService.UpdateOrderStatus(order, newOrderStatus));
+            }
+            catch (DomainException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while updating order status.");
+            }
         }
         #endregion
 
@@ -105,10 +148,17 @@ namespace FoodTotem.API.Controllers
         [HttpDelete("{id:Guid}", Name = "Delete a order")]
         public async Task<IActionResult> DeleteOrder(Guid id)
         {
-            var order = await _orderService.GetOrder(id);
-            if (order is null) return NotFound("Could not found order with the specified id");
-            var successful = await _orderService.DeleteOrder(order);
-            if (successful) return Ok("Order deleted successfully");
+            var order = await _orderAppService.GetOrder(id);
+            if (order is null)
+            {
+                return NotFound("Could not found order with the specified id");
+            }
+
+            var successful = await _orderAppService.DeleteOrder(order);
+            if (successful)
+            {
+                return Ok("Order deleted successfully");
+            }
             return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while deleting order.");
         }
         #endregion

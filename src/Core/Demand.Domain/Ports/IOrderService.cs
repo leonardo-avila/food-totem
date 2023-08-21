@@ -1,0 +1,12 @@
+﻿using Demand.Domain.Models;
+
+namespace Demand.Domain.Ports
+{
+	public interface IOrderService
+	{
+		bool IsValidOrder(Order order, IEnumerable<Food> foodsInService);
+		IEnumerable<Order> FilterOngoingOrders(IEnumerable<Order> orders);
+		bool IsValidOrderStatus(string orderStatus);
+	}
+}
+

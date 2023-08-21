@@ -24,18 +24,36 @@ namespace Demand.Domain.Models
             Combo.Add(new OrderFood(food.Id, quantity));
         }
 
+        public void UpdateOrderStatus(string orderStatus)
+        {
+            if (Enum.TryParse(orderStatus, out OrderStatusEnum orderStatusEnum))
+            {
+                SetOrderStatus(orderStatusEnum);
+            }
+            else
+            {
+                throw new DomainException("Cannot update order status. New status is invalid.");
+            }
+        }
+
         public double GetTotal()
         {
             return Combo.Sum(x => x.Food.Price * x.Quantity);
         }
 
-        public void SetOrderStatus(OrderStatusEnum orderStatus)
+        public void ApprovePayment()
+        {
+            SetOrderStatus(OrderStatusEnum.Preparing);
+            SetPaymentStatus(PaymentStatusEnum.Approved);
+        }
+
+        private void SetOrderStatus(OrderStatusEnum orderStatus)
         {
             OrderStatus = orderStatus;
             LastStatusDate = DateTime.Now;
         }
 
-        public void SetPaymentStatus(PaymentStatusEnum paymentStatus)
+        private void SetPaymentStatus(PaymentStatusEnum paymentStatus)
         {
             PaymentStatus = paymentStatus;
         }

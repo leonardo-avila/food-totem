@@ -2,7 +2,7 @@
 using Demand.Domain.Models;
 using Demand.Domain.Models.Validators;
 using Demand.Domain.Repositories;
-using Demand.Domain.Services;
+using Demand.Application.Ports;
 using FluentValidation;
 using FoodTotem.Infra.Repositories.Demand;
 using FoodTotem.Infra.Repositories.Identity;
@@ -11,6 +11,8 @@ using Identity.Application.Services;
 using Identity.Domain.Models;
 using Identity.Domain.Models.Validators;
 using Identity.Domain.Services;
+using Demand.Domain.Ports;
+using Demand.Domain.Services;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -22,8 +24,10 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<IFoodRepository, FoodRepository>();
 
+            services.AddScoped<IOrderAppService, OrderAppService>();
+            services.AddScoped<IFoodAppService, FoodAppService>();
+
             services.AddScoped<IOrderService, OrderService>();
-            services.AddScoped<IFoodService, FoodService>();
 
             services.AddScoped<IValidator<Food>, FoodValidator>();
             services.AddScoped<IValidator<Order>, OrderValidator>();

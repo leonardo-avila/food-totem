@@ -14,6 +14,8 @@
     <Folder Include="ValueObjects\" />
     <Folder Include="Models\Validators\" />
     <Folder Include="Repositories\" />
+    <Folder Include="Services\" />
+    <Folder Include="Ports\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -24,6 +26,8 @@
   <ItemGroup>
     <None Remove="Models\Validators\" />
     <None Remove="Repositories\" />
+    <None Remove="Services\" />
+    <None Remove="Ports\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
