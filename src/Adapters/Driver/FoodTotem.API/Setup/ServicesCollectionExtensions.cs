@@ -1,18 +1,19 @@
-﻿using Demand.Application.Services;
+﻿using Demand.UseCase.Services;
 using Demand.Domain.Models;
 using Demand.Domain.Models.Validators;
 using Demand.Domain.Repositories;
-using Demand.Application.Ports;
+using Demand.UseCase.Ports;
 using FluentValidation;
-using FoodTotem.Infra.Repositories.Demand;
-using FoodTotem.Infra.Repositories.Identity;
-using Identity.Application.Ports;
-using Identity.Application.Services;
+using FoodTotem.Gateways.Repositories.Demand;
+using FoodTotem.Gateways.Repositories.Identity;
+using Identity.UseCase.Ports;
+using Identity.UseCase.Services;
 using Identity.Domain.Models;
 using Identity.Domain.Models.Validators;
-using Identity.Domain.Services;
 using Demand.Domain.Ports;
 using Demand.Domain.Services;
+using Identity.Domain.Ports;
+using Identity.Domain.Services;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -24,10 +25,11 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<IFoodRepository, FoodRepository>();
 
-            services.AddScoped<IOrderAppService, OrderAppService>();
-            services.AddScoped<IFoodAppService, FoodAppService>();
+            services.AddScoped<IOrderUseCases, OrderUseCases>();
+            services.AddScoped<IFoodUseCases, FoodUseCases>();
 
             services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<IFoodService, FoodService>();
 
             services.AddScoped<IValidator<Food>, FoodValidator>();
             services.AddScoped<IValidator<Order>, OrderValidator>();
@@ -39,15 +41,13 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             services.AddScoped<ICustomerRepository, CustomerRepository>();
 
+            services.AddScoped<ICustomerUseCase, CustomerUseCase>();
+
             services.AddScoped<ICustomerService, CustomerService>();
 
             services.AddScoped<IValidator<Customer>, CustomerValidator>();
 
             return services;
         }
-
-        
-
     }
-    
 }

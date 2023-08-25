@@ -1,5 +1,6 @@
-using Demand.Application.Ports;
-using Demand.Domain.Models.Enums;
+using Demand.UseCase.OutputViewModels;
+using Demand.UseCase.Ports;
+using Domain.Core;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FoodTotem.API.Controllers
@@ -9,10 +10,10 @@ namespace FoodTotem.API.Controllers
     public class PaymentController : ControllerBase
     {
         private readonly ILogger<PaymentController> _logger;
-        private readonly IOrderAppService _orderAppService;
+        private readonly IOrderUseCases _orderAppService;
 
         public PaymentController(ILogger<PaymentController> logger,
-            IOrderAppService orderAppService)
+            IOrderUseCases orderAppService)
         {
             _logger = logger;
             _orderAppService = orderAppService;
@@ -28,12 +29,19 @@ namespace FoodTotem.API.Controllers
         [HttpGet("{orderId:Guid}", Name = "Check order payment status")]
         public async Task<IActionResult> CheckOrderPaymentStatus(Guid orderId)
         {
-            var order = await _orderAppService.GetOrder(orderId);
-            if (order is null)
+            try
             {
-                return NotFound("Order not found by the specified id");
+                var order = await _orderAppService.GetOrder(orderId);
+                return Ok($"Order {orderId} payment status is {order.PaymentStatus}");
             }
-            return Ok($"Order {orderId} payment status is {order.PaymentStatus}");
+            catch (DomainException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred when getting order payment status");
+            }
         }
         #endregion
 
@@ -46,20 +54,20 @@ namespace FoodTotem.API.Controllers
         /// <response code="404">No order with the specified id was found.</response>
         /// <response code="500">Something wrong happened when updating order payment. Could be internet connection or database connection.</response>
         [HttpPut("{orderId:Guid}", Name = "Pay order")]
-        public async Task<IActionResult> PayOrder(Guid orderId)
+        public async Task<ActionResult<CheckoutOrderViewModel>> PayOrder(Guid orderId)
         {
-            var order = await _orderAppService.GetOrder(orderId);
-            if (order is null)
+            try
             {
-                return NotFound("Order not found by the specified id");
+                return Ok(await _orderAppService.ApproveOrderPayment(orderId));
             }
-            
-            var successful = await _orderAppService.ApproveOrderPayment(order);
-            if (successful)
+            catch (DomainException ex)
             {
-                return Ok(order);
+                return BadRequest(ex.Message);
             }
-            return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred when updating the order");
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred when updating the order");
+            }
         }
         #endregion
     }

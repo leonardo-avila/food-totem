@@ -1,8 +1,8 @@
-using Demand.Application.Ports;
-using Demand.Application.ViewModels;
-using Demand.Domain.Models;
+using Demand.UseCase.Ports;
+using Demand.UseCase.InputViewModels;
 using Domain.Core;
 using Microsoft.AspNetCore.Mvc;
+using Demand.UseCase.OutputViewModels;
 
 namespace FoodTotem.API.Controllers
 {
@@ -11,10 +11,10 @@ namespace FoodTotem.API.Controllers
     public class OrderController : ControllerBase
     {
         private readonly ILogger<OrderController> _logger;
-        private readonly IOrderAppService _orderAppService;
+        private readonly IOrderUseCases _orderAppService;
 
         public OrderController(ILogger<OrderController> logger,
-            IOrderAppService orderAppService)
+            IOrderUseCases orderAppService)
         {
             _logger = logger;
             _orderAppService = orderAppService;
@@ -27,10 +27,10 @@ namespace FoodTotem.API.Controllers
         /// <returns>Returns all orders</returns>
         /// <response code="204">No orders found.</response>
         [HttpGet(Name = "Get Orders")]
-        public async Task<ActionResult<IEnumerable<Order>>> GetOrders()
+        public async Task<ActionResult<IEnumerable<CheckoutOrderViewModel>>> GetOrders()
         {
             var orders = await _orderAppService.GetOrders();
-            if (orders.Count() == 0) {
+            if (!orders.Any()) {
 
                 return NoContent();
             }
@@ -44,7 +44,7 @@ namespace FoodTotem.API.Controllers
         /// <returns>Returns the order with the specified id</returns>
         /// <response code="204">No order with the specified id was found.</response>
         [HttpGet("{id:Guid}", Name = "Get Order By Id")]
-        public async Task<IActionResult> GetById(Guid id)
+        public async Task<ActionResult<CheckoutOrderViewModel>> GetById(Guid id)
         {
             var order = await _orderAppService.GetOrder(id);
             if (order is null) return NotFound();
@@ -57,7 +57,7 @@ namespace FoodTotem.API.Controllers
         /// <returns>Returns all orders with status Preparing</returns>
         /// <response code="204">No orders found on the kitchen queue.</response>
         [HttpGet("queued", Name = "Get queued orders")]
-        public async Task<IActionResult> GetQueuedOrders()
+        public async Task<ActionResult<IEnumerable<CheckoutOrderViewModel>>> GetQueuedOrders()
         {
             var queuedOrders = await _orderAppService.GetQueuedOrders();
             if (!queuedOrders.Any())
@@ -73,7 +73,7 @@ namespace FoodTotem.API.Controllers
         /// <returns>Return all orders in course.</returns>
         /// <response code="204">No orders found for the specified id.</response>
         [HttpGet("ongoing", Name = "Get orders in progress")]
-        public async Task<IActionResult> GetOngoingOrders()
+        public async Task<ActionResult<IEnumerable<CheckoutOrderViewModel>>> GetOngoingOrders()
         {
             var ongoingOrders = await _orderAppService.GetOngoingOrders();
             if (!ongoingOrders.Any())
@@ -93,7 +93,7 @@ namespace FoodTotem.API.Controllers
         /// <response code="400">Order in invalid format. Model validations errors should be prompted when necessary.</response>
         /// <response code="500">Something wrong happened when adding order. Could be internet connection or database error.</response>
         [HttpPost(Name = "Checkout order")]
-        public async Task<IActionResult> CheckoutOrder(OrderViewModel orderViewModel)
+        public async Task<ActionResult<CheckoutOrderViewModel>> CheckoutOrder(OrderInputViewModel orderViewModel)
         {
             try
             {
@@ -114,17 +114,16 @@ namespace FoodTotem.API.Controllers
         /// <summary>
         /// Update an order status
         /// </summary>
+        /// <param name="id">Represents the order id</param>
         /// <param name="newOrderStatus">Represents the order status be setted</param>
         /// <response code="400">Order status invalid format.</response>
         /// <response code="500">Something wrong happened when adding order. Could be internet connection or database error.</response>
         [HttpPut("{id:Guid}", Name = "Update order status")]
-        public async Task<IActionResult> UpdateOrderStatus(Guid id, string newOrderStatus)
+        public async Task<ActionResult<CheckoutOrderViewModel>> UpdateOrderStatus(Guid id, string newOrderStatus)
         {
             try
             {
-                var order = await _orderAppService.GetOrder(id);
-                if (order is null) return NotFound();
-                return Ok(await _orderAppService.UpdateOrderStatus(order, newOrderStatus));
+                return Ok(await _orderAppService.UpdateOrderStatus(id, newOrderStatus));
             }
             catch (DomainException ex)
             {
@@ -148,13 +147,7 @@ namespace FoodTotem.API.Controllers
         [HttpDelete("{id:Guid}", Name = "Delete a order")]
         public async Task<IActionResult> DeleteOrder(Guid id)
         {
-            var order = await _orderAppService.GetOrder(id);
-            if (order is null)
-            {
-                return NotFound("Could not found order with the specified id");
-            }
-
-            var successful = await _orderAppService.DeleteOrder(order);
+            var successful = await _orderAppService.DeleteOrder(id);
             if (successful)
             {
                 return Ok("Order deleted successfully");

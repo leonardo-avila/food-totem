@@ -30,9 +30,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Core\Demand.Application\Demand.Application.csproj" />
-    <ProjectReference Include="..\..\..\Core\Demand.Domain\Demand.Domain.csproj" />
-    <ProjectReference Include="..\..\Driven\FoodTotem.Infra\FoodTotem.Infra.csproj" />
+    <ProjectReference Include="..\..\Driven\FoodTotem.Gateways\FoodTotem.Gateways.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Core\Identity.UseCase\Identity.UseCase.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Core\Demand.UseCase\Demand.UseCase.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
   </ItemGroup>
 
 </Project>

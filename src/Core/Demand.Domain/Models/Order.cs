@@ -58,9 +58,9 @@ namespace Demand.Domain.Models
             PaymentStatus = paymentStatus;
         }
 
-        public void SetCombo(List<OrderFood> combo)
+        public void SetCombo(IEnumerable<OrderFood> combo)
         {
-            Combo = combo;
+            Combo = combo.ToList();
         }
 
     }

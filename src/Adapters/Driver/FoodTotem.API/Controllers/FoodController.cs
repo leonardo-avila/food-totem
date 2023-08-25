@@ -1,7 +1,8 @@
-using Demand.Application.Ports;
-using Demand.Application.ViewModels;
+using Demand.UseCase.Ports;
+using Demand.UseCase.InputViewModels;
 using Domain.Core;
 using Microsoft.AspNetCore.Mvc;
+using Demand.UseCase.OutputViewModels;
 
 namespace FoodTotem.API.Controllers
 {
@@ -10,13 +11,13 @@ namespace FoodTotem.API.Controllers
     public class FoodController : ControllerBase
     {
         private readonly ILogger<FoodController> _logger;
-        private readonly IFoodAppService _foodAppService;
+        private readonly IFoodUseCases _foodUseCases;
 
         public FoodController(ILogger<FoodController> logger,
-            IFoodAppService foodAppService)
+            IFoodUseCases foodUseCases)
         {
             _logger = logger;
-            _foodAppService = foodAppService;
+            _foodUseCases = foodUseCases;
         }
 
         #region GET Endpoints
@@ -27,14 +28,14 @@ namespace FoodTotem.API.Controllers
         /// <returns>Returns the foods with the specified category</returns>
         /// <response code="400">Invalid category.</response>
         [HttpGet(Name = "Get foods by category")]
-        public async Task<IActionResult> GetFoodsByCategory(string category)
+        public async Task<ActionResult<IEnumerable<FoodOutputViewModel>>> GetFoodsByCategory(string category)
         {
             try
             {
-                var categories = await _foodAppService.GetFoodsByCategory(category);
-                if (!categories.Any())
+                var foods = await _foodUseCases.GetFoodsByCategory(category);
+                if (!foods.Any())
                     return NoContent();
-                return Ok(categories);
+                return Ok(foods);
             }
             catch (DomainException ex)
             {
@@ -56,20 +57,21 @@ namespace FoodTotem.API.Controllers
         /// <response code="400">An error occurred. Model validation errors will be prompted when necessary.</response>
         /// <response code="500">Something wrong happened when trying to add food. Could be some error on the database or internet connection.</response>
         [HttpPost(Name = "Add new food")]
-        public async Task<IActionResult> AddNewFood(FoodViewModel foodViewModel)
+        public async Task<ActionResult<FoodOutputViewModel>> AddNewFood(FoodInputViewModel foodViewModel)
         {
-            
             try
             { 
-                var successful = await _foodAppService.AddFood(foodViewModel);
-                if (successful) return Ok("Food added successfully.");
-                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while adding food.");
+                var food = await _foodUseCases.AddFood(foodViewModel);
+                return Ok("Food added successfully.");
             }
             catch (DomainException ex)
             {
                 return BadRequest(ex.Message);
             }
-            
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while adding food.");
+            }
         }
         #endregion
 
@@ -84,14 +86,11 @@ namespace FoodTotem.API.Controllers
         /// <response code="204">No food with the specified id was found.</response>
         /// <response code="500">Something wrong happened when updating food. Could be internet connection or database error.</response>
         [HttpPut("{id:Guid}", Name = "Update a food")]
-        public async Task<IActionResult> UpdateFood(Guid id, FoodViewModel foodViewModel)
+        public async Task<ActionResult<FoodOutputViewModel>> UpdateFood(Guid id, FoodInputViewModel foodViewModel)
         {
-            var food = await _foodAppService.GetFood(id);
-            if (food is null) return NotFound("Could not found food with the specified id");
-
             try
             {
-                return Ok(await _foodAppService.UpdateFood(food, foodViewModel));
+                return Ok(await _foodUseCases.UpdateFood(id, foodViewModel));
             }
             catch (DomainException ex)
             {
@@ -114,12 +113,22 @@ namespace FoodTotem.API.Controllers
         [HttpDelete("{id:Guid}", Name = "Delete a food")]
         public async Task<IActionResult> DeleteFood(Guid id)
         {
-            var food = await _foodAppService.GetFood(id);
-            if (food is null) return NotFound("Could not found food with the specified id");
+            await _foodUseCases.GetFood(id);
 
-            var successful = await _foodAppService.DeleteFood(id);
-            if (successful) return Ok("Food deleted");
-            return StatusCode(StatusCodes.Status500InternalServerError, "Something wrong happened when deleting food.");
+            try
+            {
+                await _foodUseCases.DeleteFood(id);
+
+                return Ok("Food deleted");
+            }
+            catch (DomainException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while deleting food");
+            }
         }
         #endregion
     }

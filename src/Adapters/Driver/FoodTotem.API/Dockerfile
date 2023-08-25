@@ -7,10 +7,13 @@ EXPOSE 80
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["Adapters/Driver/FoodTotem.API/FoodTotem.API.csproj", "Adapters/Driver/FoodTotem.API/"]
-COPY ["Core/Demand.Application/Demand.Application.csproj", "Core/Demand.Application/"]
+COPY ["Core/Demand.UseCase/Demand.UseCase.csproj", "Core/Demand.UseCase/"]
 COPY ["Core/Demand.Domain/Demand.Domain.csproj", "Core/Demand.Domain/"]
 COPY ["Core/Domain.Core/Domain.Core.csproj", "Core/Domain.Core/"]
-COPY ["Adapters/Driven/FoodTotem.Infra/FoodTotem.Infra.csproj", "Adapters/Driven/FoodTotem.Infra/"]
+COPY ["Core/Identity.UseCase/Identity.UseCase.csproj", "Core/Identity.UseCase/"]
+COPY ["Core/Identity.Domain/Identity.Domain.csproj", "Core/Identity.Domain/"]
+COPY ["Core/Data.Core/Data.Core.csproj", "Core/Data.Core/"]
+COPY ["Adapters/Driven/FoodTotem.Gateways/FoodTotem.Gateways.csproj", "Adapters/Driven/FoodTotem.Gateways/"]
 RUN dotnet restore "Adapters/Driver/FoodTotem.API/FoodTotem.API.csproj"
 COPY . .
 WORKDIR "/src/Adapters/Driver/FoodTotem.API"

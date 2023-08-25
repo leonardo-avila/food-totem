@@ -12,6 +12,7 @@
     <None Remove="ValueObjects\" />
     <None Remove="Models\Enums\" />
     <None Remove="Models\Validators\" />
+    <None Remove="Ports\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />
@@ -19,6 +20,7 @@
     <Folder Include="ValueObjects\" />
     <Folder Include="Models\Enums\" />
     <Folder Include="Models\Validators\" />
+    <Folder Include="Ports\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Domain.Core\Domain.Core.csproj" />
