@@ -4,11 +4,10 @@ using Demand.Domain.Models;
 using Demand.Domain.Models.Enums;
 using Demand.Domain.Repositories;
 using Domain.Core;
-using FluentValidation;
 using Demand.Domain.Ports;
 using Demand.UseCase.OutputViewModels;
 
-namespace Demand.UseCase.Services
+namespace Demand.UseCase.UseCases
 {
 	public class FoodUseCases : IFoodUseCases
 	{
@@ -101,8 +100,9 @@ namespace Demand.UseCase.Services
 		public async Task<bool> DeleteFood(Guid id)
 		{
 			var food = await _foodRepository.Get(id);
-			if (food is null) return false;
-			return await _foodRepository.Delete(food);
+			return food is null
+				? throw new DomainException("No food found with this id.")
+				: await _foodRepository.Delete(food);
 		}
 
         private static IEnumerable<FoodOutputViewModel> ProduceFoodViewModelCollection(IEnumerable<Food> foods)
@@ -117,6 +117,7 @@ namespace Demand.UseCase.Services
 		{
 			return new FoodOutputViewModel()
 			{
+				Id = food.Id,
 				Category = food.Category.ToString(),
 				Description = food.Description,
 				ImageUrl = food.ImageUrl,

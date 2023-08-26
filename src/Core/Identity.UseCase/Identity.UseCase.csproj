@@ -12,13 +12,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove="Ports\" />
-    <None Remove="Services\" />
     <None Remove="InputViewModels\" />
     <None Remove="OutputViewModels\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Ports\" />
-    <Folder Include="Services\" />
     <Folder Include="InputViewModels\" />
     <Folder Include="OutputViewModels\" />
   </ItemGroup>

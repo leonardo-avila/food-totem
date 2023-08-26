@@ -11,13 +11,13 @@ namespace FoodTotem.API.Controllers
     public class OrderController : ControllerBase
     {
         private readonly ILogger<OrderController> _logger;
-        private readonly IOrderUseCases _orderAppService;
+        private readonly IOrderUseCases _orderUseCases;
 
         public OrderController(ILogger<OrderController> logger,
-            IOrderUseCases orderAppService)
+            IOrderUseCases orderUseCases)
         {
             _logger = logger;
-            _orderAppService = orderAppService;
+            _orderUseCases = orderUseCases;
         }
 
         #region GET Endpoints
@@ -29,7 +29,7 @@ namespace FoodTotem.API.Controllers
         [HttpGet(Name = "Get Orders")]
         public async Task<ActionResult<IEnumerable<CheckoutOrderViewModel>>> GetOrders()
         {
-            var orders = await _orderAppService.GetOrders();
+            var orders = await _orderUseCases.GetOrders();
             if (!orders.Any()) {
 
                 return NoContent();
@@ -46,9 +46,18 @@ namespace FoodTotem.API.Controllers
         [HttpGet("{id:Guid}", Name = "Get Order By Id")]
         public async Task<ActionResult<CheckoutOrderViewModel>> GetById(Guid id)
         {
-            var order = await _orderAppService.GetOrder(id);
-            if (order is null) return NotFound();
-            return Ok(order);
+            try
+            {
+                return Ok(await _orderUseCases.GetOrder(id));
+            }
+            catch (DomainException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while retrieving order.");
+            }
         }
 
         /// <summary>
@@ -59,7 +68,7 @@ namespace FoodTotem.API.Controllers
         [HttpGet("queued", Name = "Get queued orders")]
         public async Task<ActionResult<IEnumerable<CheckoutOrderViewModel>>> GetQueuedOrders()
         {
-            var queuedOrders = await _orderAppService.GetQueuedOrders();
+            var queuedOrders = await _orderUseCases.GetQueuedOrders();
             if (!queuedOrders.Any())
             {
                 return NoContent();
@@ -75,7 +84,7 @@ namespace FoodTotem.API.Controllers
         [HttpGet("ongoing", Name = "Get orders in progress")]
         public async Task<ActionResult<IEnumerable<CheckoutOrderViewModel>>> GetOngoingOrders()
         {
-            var ongoingOrders = await _orderAppService.GetOngoingOrders();
+            var ongoingOrders = await _orderUseCases.GetOngoingOrders();
             if (!ongoingOrders.Any())
             {
                 return NoContent();
@@ -97,7 +106,7 @@ namespace FoodTotem.API.Controllers
         {
             try
             {
-                return Ok(await _orderAppService.CheckoutOrder(orderViewModel));
+                return Ok(await _orderUseCases.CheckoutOrder(orderViewModel));
             }
             catch (DomainException ex)
             {
@@ -112,7 +121,7 @@ namespace FoodTotem.API.Controllers
 
         #region PUT Endpoints
         /// <summary>
-        /// Update an order status
+        /// Update an order status. Available statuses: Received, Preparing, Ready, Completed
         /// </summary>
         /// <param name="id">Represents the order id</param>
         /// <param name="newOrderStatus">Represents the order status be setted</param>
@@ -123,7 +132,7 @@ namespace FoodTotem.API.Controllers
         {
             try
             {
-                return Ok(await _orderAppService.UpdateOrderStatus(id, newOrderStatus));
+                return Ok(await _orderUseCases.UpdateOrderStatus(id, newOrderStatus));
             }
             catch (DomainException ex)
             {
@@ -147,12 +156,19 @@ namespace FoodTotem.API.Controllers
         [HttpDelete("{id:Guid}", Name = "Delete a order")]
         public async Task<IActionResult> DeleteOrder(Guid id)
         {
-            var successful = await _orderAppService.DeleteOrder(id);
-            if (successful)
+            try
             {
+                await _orderUseCases.DeleteOrder(id);
                 return Ok("Order deleted successfully");
             }
-            return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while deleting order.");
+            catch (DomainException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while deleting order.");
+            }
         }
         #endregion
     }

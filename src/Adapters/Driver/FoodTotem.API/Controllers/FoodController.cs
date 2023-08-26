@@ -22,7 +22,7 @@ namespace FoodTotem.API.Controllers
 
         #region GET Endpoints
         /// <summary>
-        /// Get foods by the specified category
+        /// Get foods by the specified category. Categories: Meal, SideDish, Drink, Dessert
         /// </summary>
         /// <param name="category">Represents the category food that should be returned</param>
         /// <returns>Returns the foods with the specified category</returns>
@@ -61,8 +61,7 @@ namespace FoodTotem.API.Controllers
         {
             try
             { 
-                var food = await _foodUseCases.AddFood(foodViewModel);
-                return Ok("Food added successfully.");
+                return Ok(await _foodUseCases.AddFood(foodViewModel));
             }
             catch (DomainException ex)
             {
@@ -113,8 +112,6 @@ namespace FoodTotem.API.Controllers
         [HttpDelete("{id:Guid}", Name = "Delete a food")]
         public async Task<IActionResult> DeleteFood(Guid id)
         {
-            await _foodUseCases.GetFood(id);
-
             try
             {
                 await _foodUseCases.DeleteFood(id);

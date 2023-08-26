@@ -1,4 +1,4 @@
-﻿using Demand.UseCase.Services;
+﻿using Demand.UseCase.UseCases;
 using Demand.Domain.Models;
 using Demand.Domain.Models.Validators;
 using Demand.Domain.Repositories;
@@ -7,7 +7,7 @@ using FluentValidation;
 using FoodTotem.Gateways.Repositories.Demand;
 using FoodTotem.Gateways.Repositories.Identity;
 using Identity.UseCase.Ports;
-using Identity.UseCase.Services;
+using Identity.UseCase.UseCases;
 using Identity.Domain.Models;
 using Identity.Domain.Models.Validators;
 using Demand.Domain.Ports;

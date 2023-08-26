@@ -30,14 +30,18 @@ namespace FoodTotem.API.Controllers
         [HttpGet("{cpf}", Name = "Get customer by CPF")]
         public async Task<ActionResult<CustomerOutputViewModel>> GetCustomerByCPF(string cpf)
         {
-            var customer = await _customerUseCase.GetCustomerByCPF(cpf);
-
-            if (customer is null)
+            try
             {
-                return NoContent();
+                return Ok(await _customerUseCase.GetCustomerByCPF(cpf));
             }
-
-            return Ok(customer);
+            catch (DomainException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Something wrong occurred while trying to retrieve customer.");
+            }
         }
 
         /// <summary>
@@ -61,7 +65,7 @@ namespace FoodTotem.API.Controllers
 
         #region POST Endpoints
         /// <summary>
-        /// Add a customer with an specified CPF
+        /// Add a customer with an specified CPF. Valid authenticationTypes: CPF
         /// </summary>
         /// <param name="customerViewModel">Represents the customer that should be added</param>
         /// <returns>Return 200 when successfully added customer.</returns>
@@ -97,8 +101,6 @@ namespace FoodTotem.API.Controllers
         [HttpDelete("{id:Guid}", Name = "Delete a customer")]
         public async Task<IActionResult> DeleteCustomer(Guid id)
         {
-            await _customerUseCase.GetCustomer(id);
-
             try
             {
                 await _customerUseCase.DeleteCustomer(id);

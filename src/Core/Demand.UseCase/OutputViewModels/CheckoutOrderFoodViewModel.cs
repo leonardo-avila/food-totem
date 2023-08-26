@@ -1,6 +1,6 @@
-﻿namespace Demand.UseCase.SharedViewModels
+﻿namespace Demand.UseCase.OutputViewModels
 {
-	public class OrderFoodViewModel
+	public class CheckoutOrderFoodViewModel
 	{
 		public Guid FoodId { get; set; }
 		public double Price { get; set; }

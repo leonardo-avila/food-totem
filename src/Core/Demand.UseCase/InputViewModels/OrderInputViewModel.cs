@@ -1,10 +1,8 @@
-﻿using Demand.UseCase.SharedViewModels;
-
-namespace Demand.UseCase.InputViewModels
+﻿namespace Demand.UseCase.InputViewModels
 {
 	public class OrderInputViewModel
 	{
 		public string Customer { get; set; }
-		public IEnumerable<OrderFoodViewModel> Combo { get; set; }
+		public IEnumerable<OrderFoodInputViewModel> Combo { get; set; }
 	}
 }

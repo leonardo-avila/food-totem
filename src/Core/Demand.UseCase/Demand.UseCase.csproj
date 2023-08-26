@@ -18,12 +18,10 @@
     <None Remove="Ports\" />
     <None Remove="OutputViewModels\" />
     <None Remove="InputViewModels\" />
-    <None Remove="SharedViewModels\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Ports\" />
     <Folder Include="OutputViewModels\" />
     <Folder Include="InputViewModels\" />
-    <Folder Include="SharedViewModels\" />
   </ItemGroup>
 </Project>

@@ -6,8 +6,8 @@ using Demand.Domain.Models.Enums;
 using Demand.Domain.Ports;
 using Demand.Domain.Repositories;
 using Domain.Core;
-using Demand.UseCase.SharedViewModels;
-namespace Demand.UseCase.Services
+
+namespace Demand.UseCase.UseCases
 {
     public class OrderUseCases : IOrderUseCases
     {
@@ -142,6 +142,7 @@ namespace Demand.UseCase.Services
         {
             return new CheckoutOrderViewModel()
             {
+                Id = order.Id,
                 Customer = order.Customer,
                 LastStatusDate = order.LastStatusDate,
                 OrderDate = order.OrderDate,
@@ -152,7 +153,7 @@ namespace Demand.UseCase.Services
             };
         }
 
-        private static IEnumerable<OrderFoodViewModel> ProduceOrderFoodViewModelCollection(IEnumerable<OrderFood> orderFoods)
+        private static IEnumerable<CheckoutOrderFoodViewModel> ProduceOrderFoodViewModelCollection(IEnumerable<OrderFood> orderFoods)
         {
             foreach (var orderFood in orderFoods)
             {
@@ -160,9 +161,9 @@ namespace Demand.UseCase.Services
             }
         }
 
-        private static OrderFoodViewModel ProduceOrderFoodViewModel(OrderFood orderFood)
+        private static CheckoutOrderFoodViewModel ProduceOrderFoodViewModel(OrderFood orderFood)
         {
-            return new OrderFoodViewModel()
+            return new CheckoutOrderFoodViewModel()
             {
                 FoodId = orderFood.FoodId,
                 Price = orderFood.Food.Price,
@@ -170,7 +171,7 @@ namespace Demand.UseCase.Services
             };
         }
 
-        private static IEnumerable<OrderFood> TransformOrderFoodViewModelIntoOrderFoodCollection(IEnumerable<OrderFoodViewModel> orderFoods)
+        private static IEnumerable<OrderFood> TransformOrderFoodViewModelIntoOrderFoodCollection(IEnumerable<OrderFoodInputViewModel> orderFoods)
         {
             foreach (var orderFood in orderFoods)
             {

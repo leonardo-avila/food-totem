@@ -6,6 +6,7 @@ namespace Identity.Domain.Ports
 	{
 		bool IsValidAuthenticationType(string authenticationType);
 		void ValidateCustomer(Customer customer);
+		bool IsValidCPF(string cpf);
 	}
 }
 

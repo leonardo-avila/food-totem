@@ -6,7 +6,7 @@ using Identity.Domain.Models.Enums;
 using Domain.Core;
 using Identity.Domain.Ports;
 
-namespace Identity.UseCase.Services
+namespace Identity.UseCase.UseCases
 {
 	public class CustomerUseCase : ICustomerUseCase
 	{
@@ -54,18 +54,21 @@ namespace Identity.UseCase.Services
 		public async Task<bool> DeleteCustomer(Guid id)
 		{
 			var customer = await _customerRepository.Get(id);
-			return await _customerRepository.Delete(customer);
+
+			return customer is null
+                ? throw new DomainException("No customer found with this id.")
+                : await _customerRepository.Delete(customer);
 		}
 
 		public async Task<CustomerOutputViewModel> GetCustomerByCPF(string cpf)
 		{
+			if (!_customerService.IsValidCPF(cpf)) throw new DomainException("Invalid CPF.");
+
 			var customer = await _customerRepository.GetCustomerByCPF(cpf);
 
-			return new CustomerOutputViewModel()
-			{
-				AuthenticationType = customer.AuthenticationType.ToString(),
-				Identification = customer.CPF!
-			};
+			return customer is null
+				? throw new DomainException("No customer found with this id.")
+				: ProduceCustomerViewModel(customer);
 		}
 
 		public async Task<IEnumerable<CustomerOutputViewModel>> GetCustomers()
@@ -88,6 +91,7 @@ namespace Identity.UseCase.Services
 		{
             return new CustomerOutputViewModel()
             {
+				Id = customer.Id,
                 Identification = customer.ToString(),
                 AuthenticationType = customer.AuthenticationType.ToString()
             };
