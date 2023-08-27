@@ -30,15 +30,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Driven\FoodTotem.Gateways\FoodTotem.Gateways.csproj">
+    <ProjectReference Include="..\..\Driven\FoodTotem.Gateways.MySQL\FoodTotem.Gateways.MySQL.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Core\Identity.UseCase\Identity.UseCase.csproj">
+    <ProjectReference Include="..\..\..\Core\FoodTotem.Demand.UseCase\FoodTotem.Demand.UseCase.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Core\Demand.UseCase\Demand.UseCase.csproj">
+    <ProjectReference Include="..\..\..\Core\FoodTotem.Identity.UseCase\FoodTotem.Identity.UseCase.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
   </ItemGroup>
-
 </Project>

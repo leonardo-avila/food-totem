@@ -1,6 +1,6 @@
-using Demand.UseCase.OutputViewModels;
-using Demand.UseCase.Ports;
-using Domain.Core;
+using FoodTotem.Demand.UseCase.OutputViewModels;
+using FoodTotem.Demand.UseCase.Ports;
+using FoodTotem.Domain.Core;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FoodTotem.API.Controllers

@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="Ports\" />
+    <None Remove="OutputViewModels\" />
+    <None Remove="InputViewModels\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Ports\" />
+    <Folder Include="OutputViewModels\" />
+    <Folder Include="InputViewModels\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FoodTotem.Demand.Domain\FoodTotem.Demand.Domain.csproj" />
+    <ProjectReference Include="..\FoodTotem.Data.Core\FoodTotem.Data.Core.csproj" />
+  </ItemGroup>
+</Project>

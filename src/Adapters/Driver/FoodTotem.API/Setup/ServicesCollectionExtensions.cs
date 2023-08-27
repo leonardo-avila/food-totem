@@ -1,19 +1,19 @@
-﻿using Demand.UseCase.UseCases;
-using Demand.Domain.Models;
-using Demand.Domain.Models.Validators;
-using Demand.Domain.Repositories;
-using Demand.UseCase.Ports;
+﻿using FoodTotem.Demand.UseCase.UseCases;
+using FoodTotem.Demand.Domain.Models;
+using FoodTotem.Demand.Domain.Models.Validators;
+using FoodTotem.Demand.Domain.Repositories;
+using FoodTotem.Demand.UseCase.Ports;
 using FluentValidation;
-using FoodTotem.Gateways.Repositories.Demand;
-using FoodTotem.Gateways.Repositories.Identity;
-using Identity.UseCase.Ports;
-using Identity.UseCase.UseCases;
-using Identity.Domain.Models;
-using Identity.Domain.Models.Validators;
-using Demand.Domain.Ports;
-using Demand.Domain.Services;
-using Identity.Domain.Ports;
-using Identity.Domain.Services;
+using FoodTotem.Gateways.MySQL.Repositories.Demand;
+using FoodTotem.Gateways.MySQL.Repositories.Identity;
+using FoodTotem.Identity.UseCase.Ports;
+using FoodTotem.Identity.UseCase.UseCases;
+using FoodTotem.Identity.Domain.Models;
+using FoodTotem.Identity.Domain.Models.Validators;
+using FoodTotem.Demand.Domain.Ports;
+using FoodTotem.Demand.Domain.Services;
+using FoodTotem.Identity.Domain.Ports;
+using FoodTotem.Identity.Domain.Services;
 
 namespace Microsoft.Extensions.DependencyInjection
 {

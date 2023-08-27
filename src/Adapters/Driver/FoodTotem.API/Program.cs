@@ -1,5 +1,5 @@
 using System.Text.Json.Serialization;
-using FoodTotem.Gateways.Contexts;
+using FoodTotem.Gateways.MySQL.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 

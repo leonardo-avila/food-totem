@@ -1,8 +1,8 @@
-using Identity.UseCase.Ports;
-using Identity.UseCase.InputViewModels;
+using FoodTotem.Identity.UseCase.Ports;
+using FoodTotem.Identity.UseCase.InputViewModels;
 using Microsoft.AspNetCore.Mvc;
-using Domain.Core;
-using Identity.UseCase.OutputViewModels;
+using FoodTotem.Domain.Core;
+using FoodTotem.Identity.UseCase.OutputViewModels;
 
 namespace FoodTotem.API.Controllers
 {
