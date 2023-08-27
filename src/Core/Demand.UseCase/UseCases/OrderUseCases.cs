@@ -74,14 +74,7 @@ namespace Demand.UseCase.UseCases
             await _orderRepository.Create(order);
             var createdOrder = await _orderRepository.Get(order.Id);
 
-            return new CheckoutOrderViewModel()
-            {
-                Customer = createdOrder.Customer,
-                OrderStatus = createdOrder.OrderStatus.ToString(),
-                OrderDate = createdOrder.OrderDate,
-                Total = createdOrder.GetTotal(),
-                Combo = ProduceOrderFoodViewModelCollection(createdOrder.Combo)
-            };
+            return ProduceOrderViewModel(createdOrder);
         }
 
         public async Task<bool> DeleteOrder(Guid id)
