@@ -1,5 +1,5 @@
 using System.Text.Json.Serialization;
-using FoodTotem.Infra.Contexts;
+using FoodTotem.Gateways.MySQL.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
@@ -31,10 +31,11 @@ builder.Services.AddSwaggerGen(c =>
 // Set DbContexts
 builder.Services.AddDatabaseConfiguration(builder.Configuration);
 
-
 // Dependency Injection
 builder.Services.AddDemandServices();
 builder.Services.AddIdentityServices();
+
+builder.Services.AddPaymentServices();
 
 var app = builder.Build();
 

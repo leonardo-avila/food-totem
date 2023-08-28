@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: food-totem-api-deployment
+  labels:
+    app: food-totem-api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: food-totem-api
+  template:
+    metadata:
+      name: food-totem-api
+      labels:
+        app: food-totem-api
+    spec:
+      restartPolicy: Always
+      containers:
+      - name: food-totem-api
+        image: leonardoavila98/food-totem-api:2.0.0
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: food-totem-api
+  labels:
+    app: food-totem-api
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 8080
+    targetPort: 80
+    nodePort: 30001
+  selector:
+    app: food-totem-api

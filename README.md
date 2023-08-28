@@ -5,20 +5,34 @@ Food Totem is a web API application that controls the flow of customer orders an
 
 First of all, clone this project. Then, open the `src` folder and run the following command:
 
-```docker-compose up```
+```cmd
+docker-compose up
+```
+
+If you like to use the application with Kubernetes, you can go to `src` folder and run the following commands(in sequence):
+
+```cmd
+kubectl apply -f db-deployment.yaml
+```
+
+```cmd
+kubectl apply -f api-deployment.yaml
+```
 
 The application will be available on `http://localhost:8080/swagger/index.html`.
 
-### Fake checkout
+### Checkout
 
-At this point, API doesn't control the payment method with real payment gateways. So, to simulate a checkout, you can use the following endpoint:
+At this point, API integrates the payment method with Mercado Pago payment gateway. So, to do a checkout, you can use the following POST endpoint:
 
-```api/Payment/{orderId}```
+```api/Order```
 
-on Swagger. This endpoint will simulate a payment and will change the order status to `Preparing` and order payment status to `Approved`, that means that payment was made and the order was sent to the kitchen.
+on Swagger. This endpoint will create an order and will create a Mercado Pago QRCode payment on test environment. You can use QRCodeMonkey website on `Text` column to create the QRCode image. After that, you can use the Mercado Pago app to scan the QRCode.
+
+(Maybe the scan returns some error because it is an test environment. I tested with my own Mercado Pago test accounts.)
 
 After that, using the endpoint ```api/Order/queued``` you can see the orders in the kitchen queue.
 
 ## Observations
 
-While running the docker-compose command, the application could show in the first seconds some errors. That's because MySQL is still initializing. Wait a few seconds and then the application will be ready to use by itself.
+While running the docker-compose or api-deployment.yaml kubectl apply command, the application could show in the first seconds some errors. That's because MySQL is still initializing. Wait a few seconds and then the application will be ready to use by itself.

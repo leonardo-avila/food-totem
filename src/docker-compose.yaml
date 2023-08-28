@@ -14,10 +14,10 @@ services:
         networks:
             - foodtotem-network
     api:
-        image: leonardoavila98/food-totem-api:1.0.2
+        image: leonardoavila98/food-totem-api:2.0.0
         # build:
-        #     context: .
-        #     dockerfile: Adapters/Driver/FoodTotem.API/Dockerfile
+        #    context: .
+        #    dockerfile: Adapters/Driver/FoodTotem.API/Dockerfile
         ports:
             - "8080:80"
         depends_on:

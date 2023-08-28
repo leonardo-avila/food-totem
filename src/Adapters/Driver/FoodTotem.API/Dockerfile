@@ -7,10 +7,15 @@ EXPOSE 80
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["Adapters/Driver/FoodTotem.API/FoodTotem.API.csproj", "Adapters/Driver/FoodTotem.API/"]
-COPY ["Core/Demand.Application/Demand.Application.csproj", "Core/Demand.Application/"]
-COPY ["Core/Demand.Domain/Demand.Domain.csproj", "Core/Demand.Domain/"]
-COPY ["Core/Domain.Core/Domain.Core.csproj", "Core/Domain.Core/"]
-COPY ["Adapters/Driven/FoodTotem.Infra/FoodTotem.Infra.csproj", "Adapters/Driven/FoodTotem.Infra/"]
+COPY ["Core/FoodTotem.Demand.UseCase/FoodTotem.Demand.UseCase.csproj", "Core/FoodTotem.Demand.UseCase/"]
+COPY ["Core/FoodTotem.Demand.Domain/FoodTotem.Demand.Domain.csproj", "Core/FoodTotem.Demand.Domain/"]
+COPY ["Core/FoodTotem.Domain.Core/FoodTotem.Domain.Core.csproj", "Core/FoodTotem.Domain.Core/"]
+COPY ["Core/FoodTotem.Identity.UseCase/FoodTotem.Identity.UseCase.csproj", "Core/FoodTotem.Identity.UseCase/"]
+COPY ["Core/FoodTotem.Identity.Domain/FoodTotem.Identity.Domain.csproj", "Core/FoodTotem.Identity.Domain/"]
+COPY ["Core/FoodTotem.Data.Core/FoodTotem.Data.Core.csproj", "Core/FoodTotem.Data.Core/"]
+COPY ["Adapters/Driven/FoodTotem.Gateways.MySQL/FoodTotem.Gateways.MySQL.csproj", "Adapters/Driven/FoodTotem.Gateways.MySQL/"]
+COPY ["Adapters/Driven/FoodTotem.Gateways.Http/FoodTotem.Gateways.Http.csproj", "Adapters/Driven/FoodTotem.Gateways.Http/"]
+COPY ["Adapters/Driven/FoodTotem.Gateways.MercadoPago/FoodTotem.Gateways.MercadoPago.csproj", "Adapters/Driven/FoodTotem.Gateways.MercadoPago/"]
 RUN dotnet restore "Adapters/Driver/FoodTotem.API/FoodTotem.API.csproj"
 COPY . .
 WORKDIR "/src/Adapters/Driver/FoodTotem.API"

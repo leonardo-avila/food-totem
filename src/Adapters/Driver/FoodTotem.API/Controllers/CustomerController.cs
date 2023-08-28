@@ -1,8 +1,8 @@
-using FluentValidation;
-using Identity.Application.ViewModels;
-using Identity.Domain.Models;
-using Identity.Domain.Services;
+using FoodTotem.Identity.UseCase.Ports;
+using FoodTotem.Identity.UseCase.InputViewModels;
 using Microsoft.AspNetCore.Mvc;
+using FoodTotem.Domain.Core;
+using FoodTotem.Identity.UseCase.OutputViewModels;
 
 namespace FoodTotem.API.Controllers
 {
@@ -11,16 +11,13 @@ namespace FoodTotem.API.Controllers
     public class CustomerController : ControllerBase
     {
         private readonly ILogger<CustomerController> _logger;
-        private readonly IValidator<Customer> _customerValidator;
-        private readonly ICustomerService _customerService;
+        private readonly ICustomerUseCase _customerUseCase;
 
         public CustomerController(ILogger<CustomerController> logger,
-            ICustomerService customerService,
-            IValidator<Customer> customerValidator)
+            ICustomerUseCase customerUseCase)
         {
             _logger = logger;
-            _customerService = customerService;
-            _customerValidator = customerValidator;
+            _customerUseCase = customerUseCase;
         }
 
         #region GET Endpoints
@@ -31,12 +28,20 @@ namespace FoodTotem.API.Controllers
         /// <returns>Returns the customer with the specified CPF</returns>
         /// <response code="204">No customer found with the specified CPF.</response>
         [HttpGet("{cpf}", Name = "Get customer by CPF")]
-        public async Task<IActionResult> GetCustomerByCPF(string cpf)
+        public async Task<ActionResult<CustomerOutputViewModel>> GetCustomerByCPF(string cpf)
         {
-            var customer = await _customerService.GetCustomerByCPF(cpf);
-            if (customer is null) return NoContent();
-
-            return Ok(customer);
+            try
+            {
+                return Ok(await _customerUseCase.GetCustomerByCPF(cpf));
+            }
+            catch (DomainException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Something wrong occurred while trying to retrieve customer.");
+            }
         }
 
         /// <summary>
@@ -45,39 +50,45 @@ namespace FoodTotem.API.Controllers
         /// <returns>Returns all customers registered.</returns>
         /// <response code="204">No customer found on the database.</response>
         [HttpGet(Name = "Get all customers")]
-        public async Task<ActionResult<IEnumerable<Customer>>> GetCustomers()
+        public async Task<ActionResult<IEnumerable<CustomerOutputViewModel>>> GetCustomers()
         {
-            var customers = await _customerService.GetCustomers();
-            if (customers is null || customers.Count() == 0)
+            var customers = await _customerUseCase.GetCustomers();
+
+            if (customers is null || !customers.Any())
             {
                 return NoContent();
             }
+
             return Ok(customers);
         }
         #endregion
 
         #region POST Endpoints
         /// <summary>
-        /// Add a customer with an specified CPF
+        /// Add a customer with an specified CPF. Valid authenticationTypes: CPF
         /// </summary>
         /// <param name="customerViewModel">Represents the customer that should be added</param>
         /// <returns>Return 200 when successfully added customer.</returns>
         /// <response code="400">Customer not in valid format. Model validation errors will be prompted.</response>
         /// <response code="500">Something wrong happened when adding customer. Could be internet connection or database error.</response>
         [HttpPost(Name = "Create customer")]
-        public async Task<IActionResult> CreateCustomerByCPF(CustomerViewModel customerViewModel)
+        public async Task<ActionResult<CustomerOutputViewModel>> CreateCustomerByCPF(CustomerInputViewModel customerViewModel)
         {
-            var customer = new Customer(Identity.Domain.Models.Enums.AuthenticationTypeEnum.CPF, customerViewModel.CPF);
-            var validationResult = _customerValidator.Validate(customer);
-
-            if (validationResult.IsValid)
+            try
             {
-                var successful = await _customerService.AddCustomer(customer);
-                if (successful) return Ok("Customer added succesfuly");
+                var customer = await _customerUseCase.AddCustomer(customerViewModel);
+
+                return Ok(customer);
+            }
+            catch (DomainException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch
+            {
                 return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while adding customer");
             }
-            return BadRequest(validationResult.ToString());
-        }
+        }       
         #endregion
 
         #region DELETE Endpoints
@@ -90,12 +101,20 @@ namespace FoodTotem.API.Controllers
         [HttpDelete("{id:Guid}", Name = "Delete a customer")]
         public async Task<IActionResult> DeleteCustomer(Guid id)
         {
-            var successful = await _customerService.DeleteCustomer(id);
+            try
+            {
+                await _customerUseCase.DeleteCustomer(id);
 
-            if (successful)
                 return Ok("Customer deleted");
-
-            return NotFound("Could not found customer with the specified id");
+            }
+            catch (DomainException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while deleting customer");
+            }
         }
         #endregion
     }
