@@ -18,7 +18,7 @@ spec:
       restartPolicy: Always
       containers:
       - name: food-totem-api
-        image: leonardoavila98/food-totem-api:1.0.2
+        image: leonardoavila98/food-totem-api:2.0.0
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 80

@@ -14,6 +14,8 @@ COPY ["Core/FoodTotem.Identity.UseCase/FoodTotem.Identity.UseCase.csproj", "Core
 COPY ["Core/FoodTotem.Identity.Domain/FoodTotem.Identity.Domain.csproj", "Core/FoodTotem.Identity.Domain/"]
 COPY ["Core/FoodTotem.Data.Core/FoodTotem.Data.Core.csproj", "Core/FoodTotem.Data.Core/"]
 COPY ["Adapters/Driven/FoodTotem.Gateways.MySQL/FoodTotem.Gateways.MySQL.csproj", "Adapters/Driven/FoodTotem.Gateways.MySQL/"]
+COPY ["Adapters/Driven/FoodTotem.Gateways.Http/FoodTotem.Gateways.Http.csproj", "Adapters/Driven/FoodTotem.Gateways.Http/"]
+COPY ["Adapters/Driven/FoodTotem.Gateways.MercadoPago/FoodTotem.Gateways.MercadoPago.csproj", "Adapters/Driven/FoodTotem.Gateways.MercadoPago/"]
 RUN dotnet restore "Adapters/Driver/FoodTotem.API/FoodTotem.API.csproj"
 COPY . .
 WORKDIR "/src/Adapters/Driver/FoodTotem.API"
