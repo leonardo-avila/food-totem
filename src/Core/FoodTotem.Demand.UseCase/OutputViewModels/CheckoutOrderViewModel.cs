@@ -10,6 +10,7 @@
         public DateTime LastStatusDate { get; set; }
         public double Total { get; set; }
         public IEnumerable<CheckoutOrderFoodViewModel> Combo { get; set; }
+        public string QRCode { get; set; }
     }
 }
 

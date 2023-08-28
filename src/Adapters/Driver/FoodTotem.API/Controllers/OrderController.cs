@@ -3,6 +3,8 @@ using FoodTotem.Demand.UseCase.InputViewModels;
 using FoodTotem.Domain.Core;
 using Microsoft.AspNetCore.Mvc;
 using FoodTotem.Demand.UseCase.OutputViewModels;
+using FoodTotem.Gateways.MercadoPago.ViewModels;
+using FoodTotem.Gateways.MercadoPago;
 
 namespace FoodTotem.API.Controllers
 {
@@ -12,12 +14,15 @@ namespace FoodTotem.API.Controllers
     {
         private readonly ILogger<OrderController> _logger;
         private readonly IOrderUseCases _orderUseCases;
+        private readonly IMercadoPagoPaymentService _mercadoPagoPaymentService;
 
         public OrderController(ILogger<OrderController> logger,
-            IOrderUseCases orderUseCases)
+            IOrderUseCases orderUseCases,
+            IMercadoPagoPaymentService mercadoPagoPaymentService)
         {
             _logger = logger;
             _orderUseCases = orderUseCases;
+            _mercadoPagoPaymentService = mercadoPagoPaymentService;
         }
 
         #region GET Endpoints
@@ -106,7 +111,12 @@ namespace FoodTotem.API.Controllers
         {
             try
             {
-                return Ok(await _orderUseCases.CheckoutOrder(orderViewModel));
+                var checkoutOrder = await _orderUseCases.CheckoutOrder(orderViewModel);
+                var paymentOrder = ProducePaymentInformationViewModel(checkoutOrder);
+                var paymentQROrder = await _mercadoPagoPaymentService.GetPaymentQRCode(paymentOrder);
+
+                checkoutOrder.QRCode = paymentQROrder.qr_data;
+                return Ok(checkoutOrder);
             }
             catch (DomainException ex)
             {
@@ -117,6 +127,37 @@ namespace FoodTotem.API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while adding order.");
             }
         }
+
+        private PaymentInformationViewModel ProducePaymentInformationViewModel(CheckoutOrderViewModel checkoutOrder)
+        {
+            var expiration = DateTimeOffset.Now.AddMinutes(30).ToString("yyyy-MM-ddTHH:mm:ss.fffK");
+            return new PaymentInformationViewModel()
+            {
+                expiration_date = $"{expiration}",
+                total_amount = checkoutOrder.Total,
+                external_reference = checkoutOrder.Id.ToString(),
+                title = "Food Totem Order",
+                items = ProducePaymentItemViewModelCollection(checkoutOrder.Combo),
+                description = $"Food Totem Order{checkoutOrder.Id}"
+            };
+        }
+
+        private IEnumerable<PaymentItemViewModel> ProducePaymentItemViewModelCollection(IEnumerable<CheckoutOrderFoodViewModel> orderFoods)
+        {
+            foreach (var orderFood in orderFoods)
+            {
+                yield return new PaymentItemViewModel()
+                {
+                    sku_number = orderFood.FoodId.ToString(),
+                    unit_measure = "unit",
+                    unit_price = orderFood.Price,
+                    quantity = orderFood.Quantity,
+                    total_amount = orderFood.Price * orderFood.Quantity,
+                    title = "Food"
+                };
+            }
+        }
+
         #endregion
 
         #region PUT Endpoints

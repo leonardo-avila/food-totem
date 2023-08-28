@@ -14,6 +14,8 @@ using FoodTotem.Demand.Domain.Ports;
 using FoodTotem.Demand.Domain.Services;
 using FoodTotem.Identity.Domain.Ports;
 using FoodTotem.Identity.Domain.Services;
+using FoodTotem.Gateways.Http;
+using FoodTotem.Gateways.MercadoPago;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -46,6 +48,15 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<ICustomerService, CustomerService>();
 
             services.AddScoped<IValidator<Customer>, CustomerValidator>();
+
+            return services;
+        }
+
+        public static IServiceCollection AddPaymentServices(this IServiceCollection services)
+        {
+            services.AddScoped<IHttpHandler, HttpHandler>();
+
+            services.AddScoped<IMercadoPagoPaymentService, MercadoPagoPaymentService>();
 
             return services;
         }
