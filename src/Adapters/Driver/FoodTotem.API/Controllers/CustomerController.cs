@@ -3,6 +3,7 @@ using FoodTotem.Identity.UseCase.InputViewModels;
 using Microsoft.AspNetCore.Mvc;
 using FoodTotem.Domain.Core;
 using FoodTotem.Identity.UseCase.OutputViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FoodTotem.API.Controllers
 {
@@ -50,6 +51,7 @@ namespace FoodTotem.API.Controllers
         /// <returns>Returns all customers registered.</returns>
         /// <response code="204">No customer found on the database.</response>
         [HttpGet(Name = "Get all customers")]
+        [Authorize("Bearer")]
         public async Task<ActionResult<IEnumerable<CustomerOutputViewModel>>> GetCustomers()
         {
             var customers = await _customerUseCase.GetCustomers();
