@@ -41,6 +41,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateAudience = false,
             ValidateLifetime = false
         };
+        #if DEBUG
         options.Events = new JwtBearerEvents
         {
             OnMessageReceived = context =>
@@ -57,8 +58,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             OnTokenValidated = context =>
             {
                 // Log the claims in the token after validation
-                var claims = context.Principal.Claims.Select(c => $"{c.Type}: {c.Value}");
-                Console.WriteLine($"Token validated. Claims: {string.Join(", ", claims)}");
+                var claims = context.Principal?.Claims.Select(c => $"{c.Type}: {c.Value}");
+                Console.WriteLine($"Token validated. Claims: {string.Join(", ", claims!)}");
 
                 return Task.CompletedTask;
             },
@@ -70,6 +71,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 return Task.CompletedTask;
             }
         };
+        #endif
     });
 
 // Add authorization services

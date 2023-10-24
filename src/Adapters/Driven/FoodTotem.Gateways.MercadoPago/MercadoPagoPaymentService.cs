@@ -1,20 +1,28 @@
 ﻿using FoodTotem.Gateways.Http;
 using FoodTotem.Gateways.MercadoPago.ViewModels;
+using Microsoft.Extensions.Configuration;
 
 namespace FoodTotem.Gateways.MercadoPago
 {
     public class MercadoPagoPaymentService : IMercadoPagoPaymentService
     {
         private readonly IHttpHandler _httpHandler;
+        private readonly IConfiguration _configuration;
 
-        private const string ACCESS_TOKEN = "Bearer TEST-1955353689572708-082708-31814bc61dd1d32aad491ac0c0a23a98-1462421678";
-        private const string EXTERNAL_POS_ID = "FTSPOS01";
-        private const string USER_ID = "1462421678";
-        private const string BASE_URL = "https://api.mercadopago.com";
+        private readonly string ACCESS_TOKEN;
+        private readonly string EXTERNAL_POS_ID;
+        private readonly string USER_ID;
+        private readonly string BASE_URL;
 
-        public MercadoPagoPaymentService(IHttpHandler httpHandler)
+        public MercadoPagoPaymentService(IHttpHandler httpHandler, IConfiguration configuration)
         {
             _httpHandler = httpHandler;
+            _configuration = configuration;
+
+            ACCESS_TOKEN = _configuration["AccessToken"];
+            EXTERNAL_POS_ID = _configuration["ExternalPosId"];
+            USER_ID = _configuration["UserId"];
+            BASE_URL = _configuration["BaseUrl"];
         }
 
         public Task<QRCodeViewModel> GetPaymentQRCode(PaymentInformationViewModel paymentInformationViewModel)
