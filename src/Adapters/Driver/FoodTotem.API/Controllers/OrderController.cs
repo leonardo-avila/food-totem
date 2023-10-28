@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using FoodTotem.Demand.UseCase.OutputViewModels;
 using FoodTotem.Gateways.MercadoPago.ViewModels;
 using FoodTotem.Gateways.MercadoPago;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FoodTotem.API.Controllers
 {
@@ -32,6 +33,7 @@ namespace FoodTotem.API.Controllers
         /// <returns>Returns all orders</returns>
         /// <response code="204">No orders found.</response>
         [HttpGet(Name = "Get Orders")]
+        [Authorize("Bearer")]
         public async Task<ActionResult<IEnumerable<CheckoutOrderViewModel>>> GetOrders()
         {
             var orders = await _orderUseCases.GetOrders();
@@ -49,6 +51,7 @@ namespace FoodTotem.API.Controllers
         /// <returns>Returns the order with the specified id</returns>
         /// <response code="204">No order with the specified id was found.</response>
         [HttpGet("{id:Guid}", Name = "Get Order By Id")]
+        [Authorize("Bearer")]
         public async Task<ActionResult<CheckoutOrderViewModel>> GetById(Guid id)
         {
             try
@@ -87,6 +90,7 @@ namespace FoodTotem.API.Controllers
         /// <returns>Return all orders in course.</returns>
         /// <response code="204">No orders found for the specified id.</response>
         [HttpGet("ongoing", Name = "Get orders in progress")]
+        [Authorize("Bearer")]
         public async Task<ActionResult<IEnumerable<CheckoutOrderViewModel>>> GetOngoingOrders()
         {
             var ongoingOrders = await _orderUseCases.GetOngoingOrders();
@@ -107,6 +111,7 @@ namespace FoodTotem.API.Controllers
         /// <response code="400">Order in invalid format. Model validations errors should be prompted when necessary.</response>
         /// <response code="500">Something wrong happened when adding order. Could be internet connection or database error.</response>
         [HttpPost(Name = "Checkout order")]
+        [Authorize("Bearer")]
         public async Task<ActionResult<CheckoutOrderViewModel>> CheckoutOrder(OrderInputViewModel orderViewModel)
         {
             try
@@ -169,6 +174,7 @@ namespace FoodTotem.API.Controllers
         /// <response code="400">Order status invalid format.</response>
         /// <response code="500">Something wrong happened when adding order. Could be internet connection or database error.</response>
         [HttpPut("{id:Guid}", Name = "Update order status")]
+        [Authorize("Bearer")]
         public async Task<ActionResult<CheckoutOrderViewModel>> UpdateOrderStatus(Guid id, string newOrderStatus)
         {
             try
@@ -195,6 +201,7 @@ namespace FoodTotem.API.Controllers
         /// <response code="404">No order with the specified id was found.</response>
         /// <response code="500">Something wrong happened when deleting order. Could be internet connection or database error.</response>
         [HttpDelete("{id:Guid}", Name = "Delete a order")]
+        [Authorize("Bearer")]
         public async Task<IActionResult> DeleteOrder(Guid id)
         {
             try
