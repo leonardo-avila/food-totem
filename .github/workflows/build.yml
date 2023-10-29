@@ -16,7 +16,7 @@ jobs:
     - name: Update AppSettings
       uses: microsoft/variable-substitution@v1
       with:
-        files: /src/Adapters/Driver/FoodTotem.API/appsettings.json
+        files: ../../src/Adapters/Driver/FoodTotem.API/appsettings.json
       env:
         ConnectionStrings.DefaultConnection: ${{ secrets.MYSQL_RDS_CONNECTION_STRING }}
         AccessToken: ${{ secrets.MERCADO_PAGO_ACCESS_TOKEN }}
@@ -53,7 +53,7 @@ jobs:
       uses: docker/build-push-action@v3
       with:
         context: .
-        file: /src/Adapters/Driver/FoodTotem.API/Dockerfile
+        file: ../../src/Adapters/Driver/FoodTotem.API/Dockerfile
         platforms: linux/amd64,linux/arm64
         push: true
         tags: ${{ secrets.DOCKER_USERNAME }}/food-totem-api:latest
