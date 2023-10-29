@@ -13,6 +13,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
     - name: Update AppSettings
       uses: microsoft/variable-substitution@v1
       with:
@@ -25,9 +28,7 @@ jobs:
         BaseUrl: ${{ secrets.MERCADO_PAGO_API_URL }}
         JwtIssuerSigningKey: ${{ secrets.JWT_ISSUER_SIGNING_KEY }}
         AuthenticationUrl: ${{ secrets.AUTHENTICATION_URL }}
-
-    - name: Checkout code
-      uses: actions/checkout@v3
+ 
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
