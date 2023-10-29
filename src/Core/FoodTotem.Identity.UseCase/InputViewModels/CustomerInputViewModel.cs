@@ -2,8 +2,8 @@
 {
 	public class CustomerInputViewModel
 	{
-		public string Identification { get; set; }
-		public string AuthenticationType { get; set; }
+		public string? Identification { get; set; }
+		public string? AuthenticationType { get; set; }
 	}
 }
 

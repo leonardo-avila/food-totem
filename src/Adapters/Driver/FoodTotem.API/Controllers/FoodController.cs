@@ -3,6 +3,7 @@ using FoodTotem.Demand.UseCase.InputViewModels;
 using FoodTotem.Domain.Core;
 using Microsoft.AspNetCore.Mvc;
 using FoodTotem.Demand.UseCase.OutputViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FoodTotem.API.Controllers
 {
@@ -57,6 +58,7 @@ namespace FoodTotem.API.Controllers
         /// <response code="400">An error occurred. Model validation errors will be prompted when necessary.</response>
         /// <response code="500">Something wrong happened when trying to add food. Could be some error on the database or internet connection.</response>
         [HttpPost(Name = "Add new food")]
+        [Authorize("Bearer")]
         public async Task<ActionResult<FoodOutputViewModel>> AddNewFood(FoodInputViewModel foodViewModel)
         {
             try
@@ -85,6 +87,7 @@ namespace FoodTotem.API.Controllers
         /// <response code="204">No food with the specified id was found.</response>
         /// <response code="500">Something wrong happened when updating food. Could be internet connection or database error.</response>
         [HttpPut("{id:Guid}", Name = "Update a food")]
+        [Authorize("Bearer")]
         public async Task<ActionResult<FoodOutputViewModel>> UpdateFood(Guid id, FoodInputViewModel foodViewModel)
         {
             try
@@ -110,6 +113,7 @@ namespace FoodTotem.API.Controllers
         /// <returns>Returns 200 when successfully deleted the food</returns>
         /// <response code="404">No food with the specified id was found.</response>
         [HttpDelete("{id:Guid}", Name = "Delete a food")]
+        [Authorize("Bearer")]
         public async Task<IActionResult> DeleteFood(Guid id)
         {
             try

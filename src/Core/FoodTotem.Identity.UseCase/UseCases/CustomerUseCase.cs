@@ -91,7 +91,7 @@ namespace FoodTotem.Identity.UseCase.UseCases
 		{
             return new CustomerOutputViewModel()
             {
-				Id = customer.Id,
+								Id = customer.Id,
                 Identification = customer.ToString(),
                 AuthenticationType = customer.AuthenticationType.ToString()
             };

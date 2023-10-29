@@ -1,6 +1,7 @@
 using FoodTotem.Demand.UseCase.OutputViewModels;
 using FoodTotem.Demand.UseCase.Ports;
 using FoodTotem.Domain.Core;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FoodTotem.API.Controllers
@@ -27,6 +28,7 @@ namespace FoodTotem.API.Controllers
         /// <returns>Return the order payment status</returns>
         /// <response code="404">No order with the specified id was found.</response>
         [HttpGet("{orderId:Guid}", Name = "Check order payment status")]
+        [Authorize("Bearer")]
         public async Task<IActionResult> CheckOrderPaymentStatus(Guid orderId)
         {
             try
@@ -54,6 +56,7 @@ namespace FoodTotem.API.Controllers
         /// <response code="404">No order with the specified id was found.</response>
         /// <response code="500">Something wrong happened when updating order payment. Could be internet connection or database connection.</response>
         [HttpPut("{orderId:Guid}", Name = "Pay order")]
+        [Authorize("Bearer")]
         public async Task<ActionResult<CheckoutOrderViewModel>> PayOrder(Guid orderId)
         {
             try
