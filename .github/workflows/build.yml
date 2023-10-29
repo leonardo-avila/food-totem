@@ -26,7 +26,7 @@ jobs:
         ExternalPosId: ${{ secrets.MERCADO_PAGO_EXTERNAL_POS_ID }}
         UserId: ${{ secrets.MERCADO_PAGO_USER_ID }}
         BaseUrl: ${{ secrets.MERCADO_PAGO_API_URL }}
-        JwtIssuerSigningKey: ${{ secrets.JWT_ISSUER_SIGNING_KEY }}
+        JWTIssuerSigningKey: ${{ secrets.JWT_ISSUER_SIGNING_KEY }}
         AuthenticationUrl: ${{ secrets.AUTHENTICATION_URL }}
  
     - name: Setup .NET
