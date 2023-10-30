@@ -41,6 +41,10 @@ namespace FoodTotem.Identity.UseCase.UseCases
 
 				_customerService.ValidateCustomer(customer);
 
+				var customerExists = await _customerRepository.GetCustomerByCPF(customerInput.Identification) is not null;
+
+				if (customerExists) throw new DomainException("Customer already exists.");
+
 				await _customerRepository.Create(customer);
 
 				return ProduceCustomerViewModel(customer);
