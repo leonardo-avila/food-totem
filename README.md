@@ -5,20 +5,26 @@ Food Totem is a web API application that controls the flow of customer orders an
 
 ## How to Run
 
+### Docker Compose
 First of all, clone this project. Then, open the `src` folder and run the following command:
 
 ```cmd
 docker-compose up
 ```
 
+### Kubernetes
 If you like to use the application with Kubernetes, you can go to `src` folder and run the following commands(in sequence):
 
 ```cmd
-kubectl apply -f db-deployment.yaml
+kubectl apply -f api-deployment.yaml
 ```
 
+### Terraform
+
+If you like to use the application with Terraform, that will provide the service and deployment on the `docker-desktop` cluster on Kubernetes (be aware that is necessary to install Docker Desktop and turn on the Kubernetes in the settings first). You can go to `src` folder and run the following command:
+
 ```cmd
-kubectl apply -f api-deployment.yaml
+terraform apply --auto-aprove
 ```
 
 The application will be available on `http://localhost:8080/swagger/index.html`.
@@ -35,6 +41,3 @@ on Swagger. This endpoint will create an order and will create a Mercado Pago QR
 
 After that, using the endpoint ```api/Order/queued``` you can see the orders in the kitchen queue.
 
-## Observations
-
-While running the docker-compose or api-deployment.yaml kubectl apply command, the application could show in the first seconds some errors. That's because MySQL is still initializing. Wait a few seconds and then the application will be ready to use by itself.
