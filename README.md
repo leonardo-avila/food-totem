@@ -1,5 +1,6 @@
 # Food Totem
 [![Build](https://github.com/leonardo-avila/food-totem/actions/workflows/build.yml/badge.svg)](https://github.com/leonardo-avila/food-totem/actions/workflows/build.yml)
+[![Deploy](https://github.com/leonardo-avila/food-totem/actions/workflows/deploy.yml/badge.svg)](https://github.com/leonardo-avila/food-totem/actions/workflows/deploy.yml)
 
 Food Totem is a web API application that controls the flow of customer orders and kitchen preparing. It receives orders from customers and sends them to the kitchen with endpoints. The application is built with C#. It uses a MySQL database to store the orders and the kitchen status. The application image is available on Docker Hub.
 
