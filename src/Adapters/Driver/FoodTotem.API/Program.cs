@@ -119,17 +119,13 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddDatabaseConfiguration(builder.Configuration);
 
 // Dependency Injection
-builder.Services.AddDemandServices();
+builder.Services.AddGatewaysServices();
 builder.Services.AddIdentityServices();
-
-builder.Services.AddPaymentServices();
 
 var app = builder.Build();
 
 using (var serviceScope = app.Services.CreateScope())
 {
-    var demandContext = serviceScope.ServiceProvider.GetService<DemandContext>();
-    demandContext!.Database.Migrate();
     var identityContext = serviceScope.ServiceProvider.GetService<IdentityContext>();
     identityContext!.Database.Migrate();
 }

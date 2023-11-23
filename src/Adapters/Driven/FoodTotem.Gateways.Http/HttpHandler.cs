@@ -58,6 +58,22 @@ namespace FoodTotem.Gateways.Http
             return responseObject;
         }
 
+        public async Task<TResponse> PatchAsync<TRequest, TResponse>(string url, TRequest data, Dictionary<string, string> headers)
+        {
+            HttpContent content = new StringContent(JsonConvert.SerializeObject(data), Encoding.UTF8, "application/json");
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Patch, url);
+            request.Content = content;
+            AddHeadersToRequest(request, headers);
+
+            HttpResponseMessage response = await _httpClient.SendAsync(request);
+            string responseContent = await response.Content.ReadAsStringAsync();
+            response.EnsureSuccessStatusCode();
+
+            TResponse responseObject = JsonConvert.DeserializeObject<TResponse>(responseContent);
+
+            return responseObject;
+        }
+
         public async Task<string> DeleteAsync(string url, Dictionary<string, string> headers)
         {
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Delete, url);

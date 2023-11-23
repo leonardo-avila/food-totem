@@ -1,11 +1,10 @@
-using FoodTotem.Demand.UseCase.Ports;
-using FoodTotem.Demand.UseCase.InputViewModels;
 using FoodTotem.Domain.Core;
 using Microsoft.AspNetCore.Mvc;
-using FoodTotem.Demand.UseCase.OutputViewModels;
-using FoodTotem.Gateways.MercadoPago.ViewModels;
-using FoodTotem.Gateways.MercadoPago;
 using Microsoft.AspNetCore.Authorization;
+using FoodTotem.Gateways.Demand.ViewModels;
+using FoodTotem.Gateways.Payment.Services;
+using FoodTotem.Gateways.Demand.Services;
+using FoodTotem.Gateways.Payment.ViewModels;
 
 namespace FoodTotem.API.Controllers
 {
@@ -14,16 +13,14 @@ namespace FoodTotem.API.Controllers
     public class OrderController : ControllerBase
     {
         private readonly ILogger<OrderController> _logger;
-        private readonly IOrderUseCases _orderUseCases;
-        private readonly IMercadoPagoPaymentService _mercadoPagoPaymentService;
+        private readonly IPaymentServices _paymentServices;
+        private readonly IDemandServices _demandServices;
 
-        public OrderController(ILogger<OrderController> logger,
-            IOrderUseCases orderUseCases,
-            IMercadoPagoPaymentService mercadoPagoPaymentService)
+        public OrderController(ILogger<OrderController> logger, IPaymentServices paymentServices, IDemandServices demandServices)
         {
             _logger = logger;
-            _orderUseCases = orderUseCases;
-            _mercadoPagoPaymentService = mercadoPagoPaymentService;
+            _paymentServices = paymentServices;
+            _demandServices = demandServices;
         }
 
         #region GET Endpoints
@@ -34,9 +31,9 @@ namespace FoodTotem.API.Controllers
         /// <response code="204">No orders found.</response>
         [HttpGet(Name = "Get Orders")]
         [Authorize("Bearer")]
-        public async Task<ActionResult<IEnumerable<CheckoutOrderViewModel>>> GetOrders()
+        public async Task<ActionResult<IEnumerable<OrderViewModel>>> GetOrders()
         {
-            var orders = await _orderUseCases.GetOrders();
+            var orders = await _demandServices.GetOrders();
             if (!orders.Any()) {
 
                 return NoContent();
@@ -50,13 +47,13 @@ namespace FoodTotem.API.Controllers
         /// <param name="id"></param>
         /// <returns>Returns the order with the specified id</returns>
         /// <response code="204">No order with the specified id was found.</response>
-        [HttpGet("{id:Guid}", Name = "Get Order By Id")]
+        [HttpGet("{id}", Name = "Get Order By Id")]
         [Authorize("Bearer")]
-        public async Task<ActionResult<CheckoutOrderViewModel>> GetById(Guid id)
+        public async Task<ActionResult<OrderViewModel>> GetById(string id)
         {
             try
             {
-                return Ok(await _orderUseCases.GetOrder(id));
+                return Ok(await _demandServices.GetOrder(id));
             }
             catch (DomainException ex)
             {
@@ -74,9 +71,9 @@ namespace FoodTotem.API.Controllers
         /// <returns>Returns all orders with status Preparing</returns>
         /// <response code="204">No orders found on the kitchen queue.</response>
         [HttpGet("queued", Name = "Get queued orders")]
-        public async Task<ActionResult<IEnumerable<CheckoutOrderViewModel>>> GetQueuedOrders()
+        public async Task<ActionResult<IEnumerable<OrderViewModel>>> GetQueuedOrders()
         {
-            var queuedOrders = await _orderUseCases.GetQueuedOrders();
+            var queuedOrders = await _demandServices.GetQueuedOrders();
             if (!queuedOrders.Any())
             {
                 return NoContent();
@@ -91,9 +88,9 @@ namespace FoodTotem.API.Controllers
         /// <response code="204">No orders found for the specified id.</response>
         [HttpGet("ongoing", Name = "Get orders in progress")]
         [Authorize("Bearer")]
-        public async Task<ActionResult<IEnumerable<CheckoutOrderViewModel>>> GetOngoingOrders()
+        public async Task<ActionResult<IEnumerable<OrderViewModel>>> GetOngoingOrders()
         {
-            var ongoingOrders = await _orderUseCases.GetOngoingOrders();
+            var ongoingOrders = await _demandServices.GetOngoingOrders();
             if (!ongoingOrders.Any())
             {
                 return NoContent();
@@ -112,15 +109,17 @@ namespace FoodTotem.API.Controllers
         /// <response code="500">Something wrong happened when adding order. Could be internet connection or database error.</response>
         [HttpPost(Name = "Checkout order")]
         [Authorize("Bearer")]
-        public async Task<ActionResult<CheckoutOrderViewModel>> CheckoutOrder(OrderInputViewModel orderViewModel)
+        public async Task<ActionResult<OrderViewModel>> CheckoutOrder(CreateOrderViewModel orderViewModel)
         {
             try
-            {
-                var checkoutOrder = await _orderUseCases.CheckoutOrder(orderViewModel);
-                var paymentOrder = ProducePaymentInformationViewModel(checkoutOrder);
-                var paymentQROrder = await _mercadoPagoPaymentService.GetPaymentQRCode(paymentOrder);
+            {   
+                var checkoutOrder = await _demandServices.CreateOrder(orderViewModel);
 
-                checkoutOrder.QRCode = paymentQROrder.qr_data;
+                var paymentToCreate = ProducePaymentInformationViewModel(checkoutOrder);
+                var payment = await _paymentServices.CreatePayment(paymentToCreate);
+
+                checkoutOrder.QRCode = payment.QRCode;
+
                 return Ok(checkoutOrder);
             }
             catch (DomainException ex)
@@ -133,34 +132,17 @@ namespace FoodTotem.API.Controllers
             }
         }
 
-        private PaymentInformationViewModel ProducePaymentInformationViewModel(CheckoutOrderViewModel checkoutOrder)
+        private static CreatePaymentViewModel ProducePaymentInformationViewModel(OrderViewModel order)
         {
-            var expiration = DateTimeOffset.Now.AddMinutes(30).ToString("yyyy-MM-ddTHH:mm:ss.fffK");
-            return new PaymentInformationViewModel()
-            {
-                expiration_date = $"{expiration}",
-                total_amount = checkoutOrder.Total,
-                external_reference = checkoutOrder.Id.ToString(),
-                title = "Food Totem Order",
-                items = ProducePaymentItemViewModelCollection(checkoutOrder.Combo),
-                description = $"Food Totem Order{checkoutOrder.Id}"
+            return new CreatePaymentViewModel {
+                OrderReference = order.Id,
+                Total = order.Total,
+                OrderItems = order.Combo.Select(orderItem => new PaymentOrderItemViewModel {
+                    ItemId = orderItem.FoodId,
+                    Quantity = orderItem.Quantity,
+                    Price = orderItem.Price
+                })
             };
-        }
-
-        private IEnumerable<PaymentItemViewModel> ProducePaymentItemViewModelCollection(IEnumerable<CheckoutOrderFoodViewModel> orderFoods)
-        {
-            foreach (var orderFood in orderFoods)
-            {
-                yield return new PaymentItemViewModel()
-                {
-                    sku_number = orderFood.FoodId.ToString(),
-                    unit_measure = "unit",
-                    unit_price = orderFood.Price,
-                    quantity = orderFood.Quantity,
-                    total_amount = orderFood.Price * orderFood.Quantity,
-                    title = "Food"
-                };
-            }
         }
 
         #endregion
@@ -173,13 +155,13 @@ namespace FoodTotem.API.Controllers
         /// <param name="newOrderStatus">Represents the order status be setted</param>
         /// <response code="400">Order status invalid format.</response>
         /// <response code="500">Something wrong happened when adding order. Could be internet connection or database error.</response>
-        [HttpPut("{id:Guid}", Name = "Update order status")]
+        [HttpPut("{id}", Name = "Update order status")]
         [Authorize("Bearer")]
-        public async Task<ActionResult<CheckoutOrderViewModel>> UpdateOrderStatus(Guid id, string newOrderStatus)
+        public async Task<ActionResult<OrderViewModel>> UpdateOrderStatus(string id, string newOrderStatus)
         {
             try
             {
-                return Ok(await _orderUseCases.UpdateOrderStatus(id, newOrderStatus));
+                return Ok(await _demandServices.UpdateOrderStatus(id, newOrderStatus));
             }
             catch (DomainException ex)
             {
@@ -200,13 +182,13 @@ namespace FoodTotem.API.Controllers
         /// <returns>Returns 200 when successful</returns>
         /// <response code="404">No order with the specified id was found.</response>
         /// <response code="500">Something wrong happened when deleting order. Could be internet connection or database error.</response>
-        [HttpDelete("{id:Guid}", Name = "Delete a order")]
+        [HttpDelete("{id}", Name = "Delete a order")]
         [Authorize("Bearer")]
-        public async Task<IActionResult> DeleteOrder(Guid id)
+        public async Task<IActionResult> DeleteOrder(string id)
         {
             try
             {
-                await _orderUseCases.DeleteOrder(id);
+                await _demandServices.DeleteOrder(id);
                 return Ok("Order deleted successfully");
             }
             catch (DomainException ex)

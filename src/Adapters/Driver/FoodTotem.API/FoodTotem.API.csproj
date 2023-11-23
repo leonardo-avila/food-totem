@@ -12,12 +12,12 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\net6.0\FoodTotem.API.xml</DocumentationFile>
-    <NoWarn>1701;1702;1591</NoWarn>
+    <NoWarn>1701;1702;1591;8625;8604</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release\net6.0\FoodTotem.API.xml</DocumentationFile>
-    <NoWarn>1701;1702;1591</NoWarn>
+    <NoWarn>1701;1702;1591;8625;8604</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.24" />
@@ -36,17 +36,14 @@
     <ProjectReference Include="..\..\Driven\FoodTotem.Gateways.MySQL\FoodTotem.Gateways.MySQL.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\Core\FoodTotem.Demand.UseCase\FoodTotem.Demand.UseCase.csproj">
-      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\Core\FoodTotem.Identity.UseCase\FoodTotem.Identity.UseCase.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
     <ProjectReference Include="..\..\Driven\FoodTotem.Gateways.Http\FoodTotem.Gateways.Http.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
-    <ProjectReference Include="..\..\Driven\FoodTotem.Gateways.MercadoPago\FoodTotem.Gateways.MercadoPago.csproj">
-      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
-    </ProjectReference>
+    <ProjectReference Include="..\..\Driven\FoodTotem.Gateways.Demand\FoodTotem.Gateways.Demand.csproj" />
+    <ProjectReference Include="..\..\Driven\FoodTotem.Gateways.Payment\FoodTotem.Gateways.Payment.csproj" />
+    <ProjectReference Include="..\..\Driven\FoodTotem.Gateways.Catalog\FoodTotem.Gateways.Catalog.csproj" />
   </ItemGroup>
 </Project>

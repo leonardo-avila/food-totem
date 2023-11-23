@@ -8,6 +8,8 @@ namespace FoodTotem.Gateways.MySQL.Mappings.Identity
     {
         public void Configure(EntityTypeBuilder<Customer> builder)
         {
+            builder.ToTable("Customer");
+
             builder.HasKey(c => c.Id);
 
             builder.Property(c => c.AuthenticationType)
