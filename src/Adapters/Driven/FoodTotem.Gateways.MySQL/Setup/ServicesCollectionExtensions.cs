@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -13,26 +14,14 @@ namespace Microsoft.Extensions.DependencyInjection
 
             var connectionString = configuration.GetConnectionString("DefaultConnection")!;
 
-            services.AddDbContext<DemandContext>(options =>
-                options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
-
             services.AddDbContext<IdentityContext>(options =>
-                options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+                options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString),o => {
+                    o.SchemaBehavior(MySqlSchemaBehavior.Translate,
+                        (schema, entity) => $"{schema ?? "dbo"}_{entity}");
+                }));
         }
     }
 
-    public class DemandContextFactory : IDesignTimeDbContextFactory<DemandContext>
-    {
-        private readonly string _connectionString = "Server=localhost;Port=3306;Database=foodtotem;Uid=user;Pwd=uSeRpAsSwOrD;";
-
-        public DemandContext CreateDbContext(string[] args)
-        {
-            var optionsBuilder = new DbContextOptionsBuilder<DemandContext>();
-            optionsBuilder.UseMySql(_connectionString, ServerVersion.AutoDetect(_connectionString));
-
-            return new DemandContext(optionsBuilder.Options);
-        }
-    }
     public class IdentityContextFactory : IDesignTimeDbContextFactory<IdentityContext>
     {
         private readonly string _connectionString = "Server=localhost;Port=3306;Database=foodtotem;Uid=user;Pwd=uSeRpAsSwOrD;";
@@ -40,7 +29,10 @@ namespace Microsoft.Extensions.DependencyInjection
         public IdentityContext CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<IdentityContext>();
-            optionsBuilder.UseMySql(_connectionString, ServerVersion.AutoDetect(_connectionString));
+            optionsBuilder.UseMySql(_connectionString, ServerVersion.AutoDetect(_connectionString), o => {
+                o.SchemaBehavior(MySqlSchemaBehavior.Translate,
+                    (schema, entity) => $"{schema ?? "dbo"}_{entity}");
+            });
 
             return new IdentityContext(optionsBuilder.Options);
         }

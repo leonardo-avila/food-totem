@@ -11,12 +11,10 @@
     <NoWarn>1701;1702;8603</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <None Remove="Repositories\Demand\" />
     <None Remove="Repositories\Identity\" />
     <None Remove="Setup\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Repositories\Demand\" />
     <Folder Include="Repositories\Identity\" />
     <Folder Include="Setup\" />
   </ItemGroup>
@@ -29,7 +27,6 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Core\FoodTotem.Demand.UseCase\FoodTotem.Demand.UseCase.csproj" />
     <ProjectReference Include="..\..\..\Core\FoodTotem.Identity.UseCase\FoodTotem.Identity.UseCase.csproj" />
   </ItemGroup>
 </Project>
