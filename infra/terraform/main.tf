@@ -187,15 +187,9 @@ resource "aws_api_gateway_rest_api" "food-totem-jwt-api" {
   description = "Provides a gateway to call the JWT Generator Lambda"
 }
 
-resource "aws_api_gateway_resource" "food-totem-jwt-proxy" {
-  rest_api_id = aws_api_gateway_rest_api.food-totem-jwt-api.id
-  parent_id   = aws_api_gateway_rest_api.food-totem-jwt-api.root_resource_id
-  path_part   = "{proxy+}"
-}
-
 resource "aws_api_gateway_method" "food-totem-jwt-proxy" {
   rest_api_id   = aws_api_gateway_rest_api.food-totem-jwt-api.id
-  resource_id   = aws_api_gateway_resource.food-totem-jwt-proxy.id
+  resource_id   = aws_api_gateway_rest_api.food-totem-jwt-api.root_resource_id
   http_method   = "ANY"
   authorization = "NONE"
 }
