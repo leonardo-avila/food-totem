@@ -38,7 +38,7 @@ You can check the repositories of the microsservices on the links below:
 
 The Food Totem is written following the Clean Architecture and Microservices. At this point, the communication is centered on the Food Totem API and uses HTTP requests to get information between services. On the future months, it will apply the SAGA pattern to add resilience. By now, this is the service design:
 
-![image](https://github.com/leonardo-avila/food-totem/assets/29763488/2091255b-e052-442c-8b84-f714b2232200)
+![image](https://github.com/leonardo-avila/food-totem/assets/29763488/daa543b7-71f5-41c8-b441-687c4b558332)
 
 And the AWS deployment that Terraform generates is:
 
