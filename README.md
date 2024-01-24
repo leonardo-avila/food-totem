@@ -2,43 +2,44 @@
 [![Build](https://github.com/leonardo-avila/food-totem/actions/workflows/build.yml/badge.svg)](https://github.com/leonardo-avila/food-totem/actions/workflows/build.yml)
 [![Deploy](https://github.com/leonardo-avila/food-totem/actions/workflows/deploy.yml/badge.svg)](https://github.com/leonardo-avila/food-totem/actions/workflows/deploy.yml)
 
-Food Totem is a web API application that controls the flow of customer orders and kitchen preparing. It receives orders from customers and sends them to the kitchen with endpoints. The application is built with C#. It uses a MySQL database to store the orders and the kitchen status. The application image is available on Docker Hub.
+Food Totem is a web API (gateway) application that controls the customer orders and kitchen workflow. It receives orders from customers and sends them to the kitchen with endpoints. It also validates the JWT token of the user to approve the requests. The application is built with C#. It uses a MySQL and MongoDB databases to store the orders and the kitchen status. The application image is available on Docker Hub.
+
+## Requisites
+- .NET 6.0 or above
+- Docker
+- Kubernetes
+- Terraform
 
 ## How to Run
 
-### Docker Compose
-First of all, clone this project. Then, open the `src` folder and run the following command:
+On the root folder:
 
-```cmd
-docker-compose up
+```cmd 
+make run-services
 ```
 
-### Kubernetes
-If you like to use the application with Kubernetes, you can go to `src` folder and run the following commands(in sequence):
+The following services and addresses will be available:
+| **Service**    | **Address**           |
+|----------------|-----------------------|
+| Food Totem API | http://localhost:3000 |
+| Demand API     | http://localhost:3001 |
+| Payment API    | http://localhost:3002 |
+| Catalog API    | http://localhost:3003 |
 
-```cmd
-kubectl apply -f api-deployment.yaml
-```
+Make sure that the ports 3000 to 3003 are available before running the services.
 
-### Terraform
+You can check the repositories of the microsservices on the links below:
 
-If you like to use the application with Terraform, that will provide the service and deployment on the `docker-desktop` cluster on Kubernetes (be aware that is necessary to install Docker Desktop and turn on the Kubernetes in the settings first). You can go to `src` folder and run the following command:
+- [Food Totem Demand](https://github.com/leonardo-avila/food-totem-demand)
+- [Food Totem Payment](https://github.com/leonardo-avila/food-totem-payment)
+- [Food Totem Catalog](https://github.com/leonardo-avila/food-totem-catalog)
 
-```cmd
-terraform apply --auto-aprove
-```
+## Architecture
 
-The application will be available on `http://localhost:8080/swagger/index.html`.
+The Food Totem is written following the Clean Architecture and Microservices. At this point, the communication is centered on the Food Totem API and uses HTTP requests to get information between services. On the future months, it will apply the SAGA pattern to add resilience. By now, this is the service design:
 
-### Checkout
+![image](https://github.com/leonardo-avila/food-totem/assets/29763488/2091255b-e052-442c-8b84-f714b2232200)
 
-At this point, API integrates the payment method with Mercado Pago payment gateway. So, to do a checkout, you can use the following POST endpoint:
+And the AWS deployment that Terraform generates is:
 
-```api/Order```
-
-on Swagger. This endpoint will create an order and will create a Mercado Pago QRCode payment on test environment. You can use QRCodeMonkey website on `Text` column to create the QRCode image. After that, you can use the Mercado Pago app to scan the QRCode.
-
-(Maybe the scan returns some error because it is an test environment. I tested with my own Mercado Pago test accounts.)
-
-After that, using the endpoint ```api/Order/queued``` you can see the orders in the kitchen queue.
-
+![foodtotem drawio](https://github.com/leonardo-avila/food-totem/assets/29763488/30a8af03-3061-4397-9219-1acf90692bdd)
