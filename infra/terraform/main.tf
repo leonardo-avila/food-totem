@@ -83,8 +83,8 @@ resource "aws_ecs_task_definition" "food-totem-api-task" {
         "essential": true,
         "portMappings": [
             {
-              "containerPort": 8080,
-              "hostPort": 8080,
+              "containerPort": 80,
+              "hostPort": 80,
               "protocol": "tcp"
             }
         ],
@@ -126,7 +126,7 @@ resource "aws_ecs_task_definition" "food-totem-api-task" {
 
 resource "aws_lb_target_group" "food-totem-api-tg" {
   name     = "food-totem-api"
-  port     = 8080
+  port     = 80
   protocol = "HTTP"
   vpc_id   = data.aws_vpc.default.id
   target_type = "ip"
@@ -175,7 +175,7 @@ resource "aws_ecs_service" "food-totem-api-service" {
 
   load_balancer {
     container_name = "food-totem-api"
-    container_port = 8080
+    container_port = 80
     target_group_arn = aws_lb_target_group.food-totem-api-tg.arn
   }
 

@@ -1,5 +1,6 @@
 using System.Text;
 using System.Text.Json.Serialization;
+using FoodTotem.API.Setup;
 using FoodTotem.Gateways.MySQL.Contexts;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,8 @@ using Microsoft.OpenApi.Models;
 IdentityModelEventSource.ShowPII = true;
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true); 
+
 builder.Configuration
     .SetBasePath(builder.Environment.ContentRootPath)
     .AddJsonFile("appsettings.json", true, true)
@@ -18,11 +21,14 @@ builder.Configuration
 
 // Add services to the container.
 
-builder.Services.AddControllers().AddJsonOptions(options =>
-{
-    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
-    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-});
+builder.Services.AddControllers(options =>
+    {
+        options.Conventions.Add(new DashRouteConvention());
+    }).AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    });
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
