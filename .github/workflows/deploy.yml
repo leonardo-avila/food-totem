@@ -1,12 +1,10 @@
-# This workflow will build a .NET project
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
-
-name: Deploy
+name: deploy
 
 on:
   push:
     branches: 
       - main
+  workflow_dispatch:
 
 jobs:
   deploy:
@@ -22,13 +20,7 @@ jobs:
       with:
         files: src/Adapters/Driver/FoodTotem.API/appsettings.json
       env:
-        ConnectionStrings.DefaultConnection: ${{ secrets.MYSQL_RDS_CONNECTION_STRING }}
-        AccessToken: ${{ secrets.MERCADO_PAGO_ACCESS_TOKEN }}
-        ExternalPosId: ${{ secrets.MERCADO_PAGO_EXTERNAL_POS_ID }}
-        UserId: ${{ secrets.MERCADO_PAGO_USER_ID }}
-        BaseUrl: ${{ secrets.MERCADO_PAGO_API_URL }}
         JWTIssuerSigningKey: ${{ secrets.JWT_ISSUER_SIGNING_KEY }}
-        AuthenticationUrl: ${{ secrets.AUTHENTICATION_URL }}
  
     - name: Login to Docker Hub
       if: github.ref == 'refs/heads/main'
@@ -53,3 +45,31 @@ jobs:
         platforms: linux/amd64,linux/arm64/v8
         push: true
         tags: ${{ secrets.DOCKER_USERNAME }}/food-totem-api:latest
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+        aws-region: ${{ secrets.LAB_ACCOUNT_REGION }}
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_version: 1.5.7
+  
+    - name: Terraform Init
+      run: terraform init
+      working-directory: ./infra/terraform
+
+    - name: Terraform Apply
+      if: github.ref == 'refs/heads/main'
+      run: terraform apply -auto-approve
+      working-directory: ./infra/terraform
+      env:
+        TF_VAR_lab_account_id: ${{ secrets.LAB_ACCOUNT_ID }}
+        TF_VAR_lab_account_region: ${{ secrets.LAB_ACCOUNT_REGION }}
+        TF_VAR_food_totem_api_image: ${{ secrets.API_IMAGE }}
+        TF_VAR_mysql_password: ${{ secrets.MYSQL_PASSWORD }}
+        TF_VAR_mysql_user: ${{ secrets.MYSQL_USER }}
