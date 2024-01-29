@@ -12,33 +12,29 @@ Food Totem is a web API (gateway) application that controls the customer orders 
 
 ## How to Run
 
-On the root folder:
-
-```cmd 
-make run-services
-```
-
-The following services and addresses will be available:
-| **Service**    | **Address**           |
-|----------------|-----------------------|
-| Food Totem API | http://localhost:3000 |
-| Demand API     | http://localhost:3001 |
-| Payment API    | http://localhost:3002 |
-| Catalog API    | http://localhost:3003 |
-
-Make sure that the ports 3000 to 3003 are available before running the services.
-
-You can check the repositories of the microsservices on the links below:
+You can check the repositories of the microsservices on the links below. Start all of them before run this project:
 
 - [Food Totem Demand](https://github.com/leonardo-avila/food-totem-demand)
 - [Food Totem Payment](https://github.com/leonardo-avila/food-totem-payment)
 - [Food Totem Catalog](https://github.com/leonardo-avila/food-totem-catalog)
 
+
+The following services and addresses will be available:
+| **Service**    | **Address**           |
+|----------------|-----------------------|
+| Food Totem API | http://localhost:5031 |
+| Demand API     | http://localhost:3001 |
+| Payment API    | http://localhost:3002 |
+| Catalog API    | http://localhost:3003 |
+
+Make sure that the ports 3000 to 3003 are available before running the services, as well as the port 5031.
+
 ## Architecture
 
 The Food Totem is written following the Clean Architecture and Microservices. At this point, the communication is centered on the Food Totem API and uses HTTP requests to get information between services. On the future months, it will apply the SAGA pattern to add resilience. By now, this is the service design:
 
-![image](https://github.com/leonardo-avila/food-totem/assets/29763488/daa543b7-71f5-41c8-b441-687c4b558332)
+![image](https://github.com/leonardo-avila/food-totem/assets/29763488/77f3590d-94c7-48e4-b529-86d0dc00f4b9)
+
 
 And the AWS deployment that Terraform generates is:
 
