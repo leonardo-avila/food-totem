@@ -22,6 +22,15 @@ namespace FoodTotem.Gateways.MySQL.Mappings.Identity
 
             builder.Property(c => c.Email)
                 .HasColumnName("Email");
+            
+            builder.Property(c => c.Name)
+                .HasColumnName("Name");
+
+            builder.Property(c => c.Address)
+                .HasColumnName("Address");
+
+            builder.Property(c => c.Phone)
+                .HasColumnName("Phone");
 
             builder.Property(c => c.Protocol)
                 .HasColumnName("Protocol");
