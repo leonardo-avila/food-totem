@@ -42,6 +42,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoodTotem.Gateways.Demand",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoodTotem.Gateways.Payment", "Adapters\Driven\FoodTotem.Gateways.Payment\FoodTotem.Gateways.Payment.csproj", "{F95CFEA3-85D3-4B03-B2FC-A87E989821D4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoodTotem.Gateways.RabbitMQ", "Adapters\Driven\FoodTotem.Gateways.RabbitMQ\FoodTotem.Gateways.RabbitMQ.csproj", "{1E0D8020-FDF2-4607-BE37-991F0D553B88}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -88,6 +90,10 @@ Global
 		{F95CFEA3-85D3-4B03-B2FC-A87E989821D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F95CFEA3-85D3-4B03-B2FC-A87E989821D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F95CFEA3-85D3-4B03-B2FC-A87E989821D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E0D8020-FDF2-4607-BE37-991F0D553B88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E0D8020-FDF2-4607-BE37-991F0D553B88}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E0D8020-FDF2-4607-BE37-991F0D553B88}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E0D8020-FDF2-4607-BE37-991F0D553B88}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -109,6 +115,7 @@ Global
 		{020F9188-674E-481E-80AF-B9ADCEABF673} = {7F022BBB-7970-4482-809F-5C5CB9C71D15}
 		{14ECA514-0447-4450-9788-9BCA9C6B2909} = {7F022BBB-7970-4482-809F-5C5CB9C71D15}
 		{F95CFEA3-85D3-4B03-B2FC-A87E989821D4} = {7F022BBB-7970-4482-809F-5C5CB9C71D15}
+		{1E0D8020-FDF2-4607-BE37-991F0D553B88} = {7F022BBB-7970-4482-809F-5C5CB9C71D15}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2283AF09-2D99-48E1-8D5F-15FBFB17A6CD}

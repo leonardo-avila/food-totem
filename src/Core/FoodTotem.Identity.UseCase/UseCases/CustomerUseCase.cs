@@ -87,7 +87,14 @@ namespace FoodTotem.Identity.UseCase.UseCases
 
 		}
 
-		private static IEnumerable<CustomerOutputViewModel> ProduceCustomerViewModelCollection(IEnumerable<Customer> customers)
+		public async Task NotifyCustomer(OrderUpdateNotification order)
+		{
+			var customer = await _customerRepository.GetCustomerByCPF(order.Customer) ?? throw new DomainException("No customer found for this CPF");
+
+			//TODO: Implement notification logic
+        }
+
+        private static IEnumerable<CustomerOutputViewModel> ProduceCustomerViewModelCollection(IEnumerable<Customer> customers)
 		{
 			foreach (var customer in customers)
 			{

@@ -10,6 +10,9 @@ using FoodTotem.Gateways.Http;
 using FoodTotem.Gateways.Catalog.Services;
 using FoodTotem.Gateways.Demand.Services;
 using FoodTotem.Gateways.Payment.Services;
+using FoodTotem.Identity.Domain;
+using FoodTotem.Gateways.RabbitMQ;
+using FoodTotem.Demand.Gateways.RabbitMQ;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -34,6 +37,9 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<ICatalogService, CatalogService>();
             services.AddScoped<IDemandServices, DemandServices>();
             services.AddScoped<IPaymentServices, PaymentServices>();
+            services.AddScoped<IMessenger, Messenger>();
+
+            services.AddHostedService<DemandMessagesConsumer>();
 
             return services;
         }

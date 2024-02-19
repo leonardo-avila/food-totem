@@ -73,3 +73,5 @@ jobs:
         TF_VAR_food_totem_api_image: ${{ secrets.API_IMAGE }}
         TF_VAR_mysql_password: ${{ secrets.MYSQL_PASSWORD }}
         TF_VAR_mysql_user: ${{ secrets.MYSQL_USER }}
+        TF_VAR_rabbitMQ_password: ${{ secrets.RABBITMQ_PASSWORD }}
+        TF_VAR_rabbitMQ_user: ${{ secrets.RABBITMQ_USER }}

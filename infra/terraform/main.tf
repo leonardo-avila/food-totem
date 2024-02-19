@@ -46,6 +46,10 @@ data "aws_lambda_function" "food-totem-jwt" {
   function_name = "food-totem-jwt"
 }
 
+data "aws_lb" "rabbitmq_lb" {
+  name = "rabbitmq-lb"
+}
+
 locals {
   endpoint_parts = split(":", aws_db_instance.food-totem-mysql.endpoint)
   port = local.endpoint_parts[1]
@@ -108,6 +112,18 @@ resource "aws_ecs_task_definition" "food-totem-api-task" {
             {
                 "name": "CatalogServiceUrl",
                 "value": local.catalog_url
+            },
+            {
+                "name": "RabbitMQ__HostName",
+                "value": data.aws_lb.rabbitmq_lb.dns_name
+            },
+            {
+                "name": "RabbitMQ__UserName",
+                "value": var.rabbitMQ_user
+            },
+            {
+                "name": "RabbitMQ__Password",
+                "value": var.rabbitMQ_password
             }
         ],
         "cpu": 256,

@@ -13,7 +13,14 @@ services:
         container_name: food-totem-database
         networks:
             - foodtotem-network
-
+    food-totem-mq:
+        image: rabbitmq:management
+        ports:
+            - "5672:5672"
+            - "15672:15672"
+        container_name: food-totem-mq
+        networks:
+            - foodtotem-network
 networks:
     foodtotem-network:
         driver: bridge

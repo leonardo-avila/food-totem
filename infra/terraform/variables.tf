@@ -18,3 +18,13 @@ variable "mysql_password" {
 variable "food_totem_api_image" {
   description = "Food Totem API image"
 }
+
+variable "rabbitMQ_user" {
+  type = string
+  sensitive = true
+}
+
+variable "rabbitMQ_password" {
+  type = string
+  sensitive = true
+}
