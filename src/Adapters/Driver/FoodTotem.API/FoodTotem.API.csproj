@@ -21,7 +21,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.24" />
-    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="7.0.3" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="7.1.2" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.18.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.12">
@@ -29,7 +29,7 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.14" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.0.3" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.1.2" />
   </ItemGroup>
 
   <ItemGroup>
@@ -45,5 +45,6 @@
     <ProjectReference Include="..\..\Driven\FoodTotem.Gateways.Demand\FoodTotem.Gateways.Demand.csproj" />
     <ProjectReference Include="..\..\Driven\FoodTotem.Gateways.Payment\FoodTotem.Gateways.Payment.csproj" />
     <ProjectReference Include="..\..\Driven\FoodTotem.Gateways.Catalog\FoodTotem.Gateways.Catalog.csproj" />
+    <ProjectReference Include="..\..\Driven\FoodTotem.Gateways.RabbitMQ\FoodTotem.Gateways.RabbitMQ.csproj" />
   </ItemGroup>
 </Project>

@@ -1,0 +1,26 @@
+version: "1.0"
+
+services:
+    food-totem-database:
+        image: mysql:8.0.33
+        environment:
+            MYSQL_ROOT_PASSWORD: StRoNg_PaSsWoRd
+            MYSQL_DATABASE: foodtotem
+            MYSQL_USER: user
+            MYSQL_PASSWORD: uSeRpAsSwOrD
+        ports:
+            - "33060:3306"
+        container_name: food-totem-database
+        networks:
+            - foodtotem-network
+    food-totem-mq:
+        image: rabbitmq:management
+        ports:
+            - "5672:5672"
+            - "15672:15672"
+        container_name: food-totem-mq
+        networks:
+            - foodtotem-network
+networks:
+    foodtotem-network:
+        driver: bridge

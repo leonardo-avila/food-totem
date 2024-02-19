@@ -13,8 +13,7 @@ namespace FoodTotem.Identity.Domain.Models.Validators
                 .WithMessage("CPF couldn't be null.");
 
             RuleFor(c => c.AuthenticationType).IsInEnum();
-
-            // Add validations for email in the future, where the endpoint receives customers with emails to save on the database.
+            RuleFor(c => c.Email).EmailAddress().When(c => c.Email is not null);
 		}
 
 

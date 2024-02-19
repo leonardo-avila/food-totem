@@ -24,7 +24,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
     public class IdentityContextFactory : IDesignTimeDbContextFactory<IdentityContext>
     {
-        private readonly string _connectionString = "Server=localhost;Port=3306;Database=foodtotem;Uid=user;Pwd=uSeRpAsSwOrD;";
+        private readonly string _connectionString = "Server=localhost;Port=33060;Database=foodtotem;Uid=user;Pwd=uSeRpAsSwOrD;";
 
         public IdentityContext CreateDbContext(string[] args)
         {

@@ -37,7 +37,11 @@ namespace FoodTotem.Identity.UseCase.UseCases
 			if (_customerService.IsValidAuthenticationType(customerInput.AuthenticationType))
 			{
 				var customer = new Customer(Enum.Parse<AuthenticationTypeEnum>(customerInput.AuthenticationType),
-					customerInput.Identification);
+					customerInput.Identification,
+					customerInput.Name,
+					customerInput.Address,
+					customerInput.Phone,
+					customerInput.Email);
 
 				_customerService.ValidateCustomer(customer);
 
@@ -83,7 +87,14 @@ namespace FoodTotem.Identity.UseCase.UseCases
 
 		}
 
-		private static IEnumerable<CustomerOutputViewModel> ProduceCustomerViewModelCollection(IEnumerable<Customer> customers)
+		public async Task NotifyCustomer(OrderUpdateNotification order)
+		{
+			var customer = await _customerRepository.GetCustomerByCPF(order.Customer) ?? throw new DomainException("No customer found for this CPF");
+
+			//TODO: Implement notification logic
+        }
+
+        private static IEnumerable<CustomerOutputViewModel> ProduceCustomerViewModelCollection(IEnumerable<Customer> customers)
 		{
 			foreach (var customer in customers)
 			{
@@ -95,9 +106,13 @@ namespace FoodTotem.Identity.UseCase.UseCases
 		{
             return new CustomerOutputViewModel()
             {
-								Id = customer.Id,
+				Id = customer.Id,
                 Identification = customer.ToString(),
-                AuthenticationType = customer.AuthenticationType.ToString()
+                AuthenticationType = customer.AuthenticationType.ToString(),
+				Name = customer.Name ?? string.Empty,
+				Address = customer.Address ?? string.Empty,
+				Phone = customer.Phone ?? string.Empty,
+				Email = customer.Email ?? string.Empty
             };
         }
 	}

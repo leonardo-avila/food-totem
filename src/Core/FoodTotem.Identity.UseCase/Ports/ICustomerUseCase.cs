@@ -10,5 +10,6 @@ namespace FoodTotem.Identity.UseCase.Ports
 		Task<CustomerOutputViewModel> GetCustomer(Guid id);
 		Task<bool> DeleteCustomer(Guid id);
 		Task<IEnumerable<CustomerOutputViewModel>> GetCustomers();
+		Task NotifyCustomer(OrderUpdateNotification order);
 	}
 }
