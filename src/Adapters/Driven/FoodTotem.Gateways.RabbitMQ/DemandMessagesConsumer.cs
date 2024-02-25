@@ -12,7 +12,6 @@ namespace FoodTotem.Demand.Gateways.RabbitMQ
     public class DemandMessagesConsumer : BackgroundService
     {
         private readonly IServiceScopeFactory _serviceScopeFactory;
-        private ICustomerUseCase? _customerUseCases;
         public DemandMessagesConsumer(IServiceScopeFactory serviceScopeFactory)
         {
             _serviceScopeFactory = serviceScopeFactory;
@@ -24,19 +23,21 @@ namespace FoodTotem.Demand.Gateways.RabbitMQ
             {
                 using var scope = _serviceScopeFactory.CreateScope();
                 var messenger = scope.ServiceProvider.GetRequiredService<IMessenger>();
-                _customerUseCases = scope.ServiceProvider.GetRequiredService<ICustomerUseCase>();
-
-                messenger.Consume("order-updated-event",
-                    (e) => ProccessMessage(this, (BasicDeliverEventArgs)e));
-            }, stoppingToken);
+                messenger.Consume("order-updated-event", async (e) =>
+                {
+                    await ProccessMessage(this, (BasicDeliverEventArgs)e);
+                });
+            }, stoppingToken);  
         }
 
 
-        private void ProccessMessage(object sender, BasicDeliverEventArgs e)
+        private async Task ProccessMessage(object sender, BasicDeliverEventArgs e)
         {
+            using var scope = _serviceScopeFactory.CreateScope();
+            var customerUseCases = scope.ServiceProvider.GetRequiredService<ICustomerUseCase>();
             var message = Encoding.UTF8.GetString(e.Body.ToArray());
             var order = JsonSerializer.Deserialize<OrderUpdateNotification>(message);
-            _customerUseCases.NotifyCustomer(order!);
+            await customerUseCases.NotifyCustomer(order!);
         }
     }
 }

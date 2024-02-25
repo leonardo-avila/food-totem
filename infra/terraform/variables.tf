@@ -28,3 +28,18 @@ variable "rabbitMQ_password" {
   type = string
   sensitive = true
 }
+
+variable "mailtrap_host" {
+  type = string
+  sensitive = true
+}
+
+variable "mailtrap_user" {
+  type = string
+  sensitive = true
+}
+
+variable "mailtrap_password" {
+  type = string
+  sensitive = true
+}

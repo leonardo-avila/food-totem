@@ -61,3 +61,6 @@ jobs:
         TF_VAR_mysql_user: ${{ secrets.MYSQL_USER }}
         TF_VAR_rabbitMQ_password: ${{ secrets.RABBITMQ_PASSWORD }}
         TF_VAR_rabbitMQ_user: ${{ secrets.RABBITMQ_USER }}
+        TF_VAR_mailtrap_password: ${{ secrets.MAILTRAP_PASSWORD }}
+        TF_VAR_mailtrap_user: ${{ secrets.MAILTRAP_USERNAME }}
+        TF_VAR_mailtrap_host: ${{ secrets.MAILTRAP_HOST }}

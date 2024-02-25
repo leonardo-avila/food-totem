@@ -124,6 +124,18 @@ resource "aws_ecs_task_definition" "food-totem-api-task" {
             {
                 "name": "RabbitMQ__Password",
                 "value": var.rabbitMQ_password
+            },
+            {
+                "name": "Mailtrap__Host",
+                "value": var.mailtrap_host
+            },
+            {
+                "name": "Mailtrap__Password",
+                "value": var.mailtrap_password
+            },
+            {
+                "name": "Mailtrap__Username",
+                "value": var.mailtrap_user
             }
         ],
         "cpu": 256,
