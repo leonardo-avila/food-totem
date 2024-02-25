@@ -136,6 +136,12 @@ using (var serviceScope = app.Services.CreateScope())
     identityContext!.Database.Migrate();
 }
 
+app.Use(async (context, next) =>
+{
+    context.Response.Headers.Add("X-Content-Type-Options", "nosniff");
+    await next.Invoke();
+});
+
 // Configure the HTTP request pipeline.
 app.UseSwagger();
 app.UseSwaggerUI(c => {

@@ -46,5 +46,6 @@
     <ProjectReference Include="..\..\Driven\FoodTotem.Gateways.Payment\FoodTotem.Gateways.Payment.csproj" />
     <ProjectReference Include="..\..\Driven\FoodTotem.Gateways.Catalog\FoodTotem.Gateways.Catalog.csproj" />
     <ProjectReference Include="..\..\Driven\FoodTotem.Gateways.RabbitMQ\FoodTotem.Gateways.RabbitMQ.csproj" />
+    <ProjectReference Include="..\..\Driven\FoodTotem.Gateways.Email\FoodTotem.Gateways.Email.csproj" />
   </ItemGroup>
 </Project>

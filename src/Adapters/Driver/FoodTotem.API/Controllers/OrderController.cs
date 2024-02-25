@@ -115,11 +115,6 @@ namespace FoodTotem.API.Controllers
             {   
                 var checkoutOrder = await _demandServices.CreateOrder(orderViewModel);
 
-                var paymentToCreate = ProducePaymentInformationViewModel(checkoutOrder);
-                var payment = await _paymentServices.CreatePayment(paymentToCreate);
-
-                checkoutOrder.QRCode = payment.QRCode;
-
                 return Ok(checkoutOrder);
             }
             catch (DomainException ex)
@@ -130,19 +125,6 @@ namespace FoodTotem.API.Controllers
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while adding order.");
             }
-        }
-
-        private static CreatePaymentViewModel ProducePaymentInformationViewModel(OrderViewModel order)
-        {
-            return new CreatePaymentViewModel {
-                OrderReference = order.Id,
-                Total = order.Total,
-                OrderItems = order.Combo.Select(orderItem => new PaymentOrderItemViewModel {
-                    ItemId = orderItem.FoodId,
-                    Quantity = orderItem.Quantity,
-                    Price = orderItem.Price
-                })
-            };
         }
 
         #endregion

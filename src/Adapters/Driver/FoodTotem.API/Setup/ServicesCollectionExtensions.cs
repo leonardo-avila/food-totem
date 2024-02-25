@@ -13,6 +13,7 @@ using FoodTotem.Gateways.Payment.Services;
 using FoodTotem.Identity.Domain;
 using FoodTotem.Gateways.RabbitMQ;
 using FoodTotem.Demand.Gateways.RabbitMQ;
+using FoodTotem.Gateways.Email;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -38,6 +39,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<IDemandServices, DemandServices>();
             services.AddScoped<IPaymentServices, PaymentServices>();
             services.AddScoped<IMessenger, Messenger>();
+            services.AddScoped<IMessageService, MessageService>();
 
             services.AddHostedService<DemandMessagesConsumer>();
 

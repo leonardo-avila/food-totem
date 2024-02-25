@@ -13,11 +13,15 @@ namespace FoodTotem.Identity.UseCase.UseCases
 		private readonly ICustomerRepository _customerRepository;
 		private readonly ICustomerService _customerService;
 
+		private readonly IMessageService _messageService;
+
 		public CustomerUseCase(ICustomerRepository customerRepository,
-			ICustomerService customerService)
+			ICustomerService customerService,
+			IMessageService messageService)
 		{
 			_customerRepository = customerRepository;
 			_customerService = customerService;
+			_messageService = messageService;
 		}
 
 		public async Task<CustomerOutputViewModel> GetCustomer(Guid id)
@@ -91,7 +95,12 @@ namespace FoodTotem.Identity.UseCase.UseCases
 		{
 			var customer = await _customerRepository.GetCustomerByCPF(order.Customer) ?? throw new DomainException("No customer found for this CPF");
 
-			//TODO: Implement notification logic
+			if (order.OrderStatus.Equals("Preparing")) {
+				//_messageService.SendMessageAsync(customer.Email, "Order Status", "Your order is being prepared.");
+			}
+			else {
+				//_messageService.SendMessageAsync(customer.Email, "Order Status", "Your order has been canceled due to an payment issue.");
+			}
         }
 
         private static IEnumerable<CustomerOutputViewModel> ProduceCustomerViewModelCollection(IEnumerable<Customer> customers)

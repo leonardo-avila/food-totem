@@ -22,12 +22,12 @@ You can check the repositories of the microsservices on the links below. Start a
 The following services and addresses will be available:
 | **Service**    | **Address**           |
 |----------------|-----------------------|
-| Food Totem API | http://localhost:5031 |
+| Food Totem API | http://localhost:3000 |
 | Demand API     | http://localhost:3001 |
 | Payment API    | http://localhost:3002 |
 | Catalog API    | http://localhost:3003 |
 
-Make sure that the ports 3000 to 3003 are available before running the services, as well as the port 5031.
+Make sure that the ports 3000 to 3003 are available before running the services.
 
 ## Architecture
 
