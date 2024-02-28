@@ -13,10 +13,16 @@ Food Totem is a web API (gateway) application that controls the customer orders 
 ## How to Run
 
 You can check the repositories of the microsservices on the links below. Start all of them before run this project:
-
+- [JWT Lambda](https://github.com/leonardo-avila/jwt-lambda) - Deploy the lambda to AWS to use his API Gateway as authorization url.
 - [Food Totem Demand](https://github.com/leonardo-avila/food-totem-demand)
 - [Food Totem Payment](https://github.com/leonardo-avila/food-totem-payment)
 - [Food Totem Catalog](https://github.com/leonardo-avila/food-totem-catalog)
+
+In `docker-compose.yaml` file on `infra/local` folder, set the JWT Issuer Signing Key and the AuthorizationUrl. Both should be equal to the used on JWT Lambda. Then, you can run on the root folder:
+
+```bash
+make run-services
+```
 
 
 The following services and addresses will be available:
@@ -35,7 +41,23 @@ The Food Totem is written following the Clean Architecture and Microservices. At
 
 ![image](https://github.com/leonardo-avila/food-totem/assets/29763488/77f3590d-94c7-48e4-b529-86d0dc00f4b9)
 
+Simplified architecture diagram:
+![image](https://github.com/leonardo-avila/food-totem/assets/29763488/2f5e75ef-5072-4102-8ac3-f5b1c7fb6ac3)
 
-And the AWS deployment that Terraform generates is:
+The Food Totem base service is provided by a load balancer with a public IP, while the other services are internal to the VPC. The base service performs JWT authentication and authorizes requests using the generated token. All requests are directed to the microservices that best serve them. Communication between microservices is done through messages in queues in RabbitMQ, and all notifications to clients are done via email, using the Mailtrap mock.
 
-![foodtotem drawio](https://github.com/leonardo-avila/food-totem/assets/29763488/30a8af03-3061-4397-9219-1acf90692bdd)
+## SAGA Pattern - Coreography
+
+Food Totem uses RabbitMQ as his coreographer to send messages between services. This choice was made considering the simplicity of implementation and also the few scenarios that needed to be covered by the messages. The messages are sent to queues for every event that happens on the system. The messages are sent to the queues and the services are listening to them as follow:
+
+| **Queue**               | **Description**                                                                                         |
+|-------------------------|---------------------------------------------------------------------------------------------------------|
+| order-created-event     | Order was created and the payment service consume this message to generate the payment.                 |
+| payment-failure-event   | There was a problem generating the problem. The Demand service consume this message deleting the order. |
+| payment-paid-event      | The payment was concluded. Demand service consume the message updating the order.                       |
+| payment-cancelled-event | Payment was cancelled. Demand service consume the message cancelling the order.                         |
+| order-updated-event     | Every update on the order. Food Totem consume the message notifying the customer.                       |
+
+## Customer notification
+
+Since this is a study project and the main goal is to learn about software architecture with low or no cost, the customer notification is made by email using [Mailtrap](https://mailtrap.io/). This service uses a fake inbox to receive the emails and show them on the web interface. The email is sent by the Food Totem API when the order is updated. The email is sent to the customer with the order status.
