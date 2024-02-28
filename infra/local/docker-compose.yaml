@@ -21,6 +21,29 @@ services:
         container_name: food-totem-mq
         networks:
             - foodtotem-network
+    food-totem-api:
+        build:
+            context: ../../src
+            dockerfile: Dockerfile
+        ports:
+            - "3000:80"
+        container_name: food-totem-api
+        depends_on:
+            - food-totem-database
+            - food-totem-mq
+        environment:
+            RabbitMQ__HostName: food-totem-mq
+            RabbitMQ__Port: 5672
+            RabbitMQ__Username: guest
+            RabbitMQ__Password: guest
+            ConnectionStrings__DefaultConnection: Server=food-totem-database;Port=3306;Database=foodtotem;Uid=user;Pwd=uSeRpAsSwOrD;
+            DemandServiceUrl: http://food-totem-demand:80
+            PaymentServiceUrl: http://food-totem-payment:80
+            CatalogServiceUrl: http://food-totem-catalog:80
+            JWTIssuerSigningKey: <YourSecretKey>
+            AuthenticationUrl: <YourLambdaUrl>
+        networks:
+            - foodtotem-network
 networks:
     foodtotem-network:
         driver: bridge
