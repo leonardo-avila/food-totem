@@ -19,7 +19,7 @@ public class MessageService : IMessageService
         var client = new SmtpClient(_configuration["Mailtrap:Host"], 2525)
         {
             Credentials = new NetworkCredential(_configuration["Mailtrap.Username"], _configuration["Mailtrap.Password"]),
-            EnableSsl = true
+            EnableSsl = false
         };
         client.Send("foodtotem@teste.com", email, subject, message);
     }
