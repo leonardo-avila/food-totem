@@ -7,5 +7,6 @@ namespace FoodTotem.Gateways.Payment.ViewModels
         public string ExpirationDate { get; set; }
         public string QRCode { get; set; }
         public double Total { get; set; }
+        public string Status { get; set; }
     }
 }
