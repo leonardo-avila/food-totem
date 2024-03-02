@@ -22,13 +22,18 @@ public class PaymentServices : IPaymentServices
         return await _httpHandler.PostAsync<CreatePaymentViewModel, PaymentViewModel>($"{PaymentUrl}/payment", createPaymentViewModel, null);
     }
 
-    public async Task<PaymentViewModel> GetPayments()
+    public async Task<IEnumerable<PaymentViewModel>> GetPayments()
     {
-        return await _httpHandler.GetAsync<PaymentViewModel>($"{PaymentUrl}/payment", null);
+        return await _httpHandler.GetAsync<IEnumerable<PaymentViewModel>>($"{PaymentUrl}/payment", null);
     }
 
     public async Task<PaymentViewModel> GetPaymentByOrderReference(string orderReference)
     {
         return await _httpHandler.GetAsync<PaymentViewModel>($"{PaymentUrl}/payment/{orderReference}", null);
+    }
+
+    public async Task<PaymentViewModel> UpdatePaymentStatus(PaymentUpdateViewModel paymentUpdateViewModel)
+    {
+        return await _httpHandler.PutAsync<PaymentUpdateViewModel, PaymentViewModel>($"{PaymentUrl}/payment", paymentUpdateViewModel, null);
     }
 }

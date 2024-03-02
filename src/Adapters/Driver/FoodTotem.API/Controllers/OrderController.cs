@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Authorization;
 using FoodTotem.Gateways.Demand.ViewModels;
 using FoodTotem.Gateways.Payment.Services;
 using FoodTotem.Gateways.Demand.Services;
-using FoodTotem.Gateways.Payment.ViewModels;
 
 namespace FoodTotem.API.Controllers
 {

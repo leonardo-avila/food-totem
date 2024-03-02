@@ -96,13 +96,13 @@ namespace FoodTotem.Identity.UseCase.UseCases
 			var customer = await _customerRepository.GetCustomerByCPF(order.Customer) ?? throw new DomainException("No customer found for this CPF");
 
 			if (order.OrderStatus.Equals("Preparing")) {
-				_messageService.SendMessageAsync(customer.Email, "Order Status", "Your order is being prepared.");
+				//_messageService.SendMessageAsync(customer.Email, "Order Status", "Your order is being prepared.");
 			}
 			else if (order.OrderStatus.Equals("Canceled") && order.PaymentStatus.Equals("Failed")){
-				_messageService.SendMessageAsync(customer.Email, "Order could not be generated", "Your order has been canceled due to an issue on the internal process. Please try to order again.");
+				//_messageService.SendMessageAsync(customer.Email, "Order could not be generated", "Your order has been canceled due to an issue on the internal process. Please try to order again.");
 			}
 			else {
-				_messageService.SendMessageAsync(customer.Email, "Order Canceled", "Your order has been canceled due to an payment issue.");
+				//_messageService.SendMessageAsync(customer.Email, "Order Canceled", "Your order has been canceled due to an payment issue.");
 			}
         }
 
